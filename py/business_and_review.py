@@ -3,6 +3,9 @@
 # purify the data and keep useful parts
 # upload data into es
 import json
+from util import serialize_for_es
+from util import files_name_gen
+from ref_yelp_trend import cal_yelp_trend
 from datetime import datetime
 
 
@@ -41,10 +44,23 @@ def get_business_review_map(source_file_review, business_map):
                 item["stars"] += data["stars"]
                 item["review_amount"] += 1
             else:
+                dt = datetime.strptime(key_date, '%Y-%m-%d')
+                date_in_seconds = int(dt.timestamp())
                 business_map[key_business]["stars_reviews"][key_date] = \
-                    {"review_amount": 1, "stars": star_amount}
+                    {"review_amount": 1, "stars": star_amount, "date_in_seconds": date_in_seconds, "avg_stars": 0}
         count += 1
-    return business_map
+    business_review_map = business_map
+    return business_review_map
+
+
+def add_avg_stars_in_business_review_map(business_review_map):
+    for business in business_review_map:
+        for date in business_review_map[business]["stars_reviews"]:
+            stars_amount = business_review_map[business]["stars_reviews"][date]["stars"]
+            review_amount = business_review_map[business]["stars_reviews"][date]["review_amount"]
+            business_review_map[business]["stars_reviews"][date]["avg_stars"] = stars_amount / review_amount
+    business_review_map_with_avg_stars = business_review_map
+    return business_review_map_with_avg_stars
 
 
 def add_stars_reviews_diff_in_business_review_map(business_review_map):
@@ -52,14 +68,13 @@ def add_stars_reviews_diff_in_business_review_map(business_review_map):
         m = {}
         max_diff_stars = max_diff_review_amount = diff_stars = 0
         for date in business_review_map.get(temp)["stars_reviews"]:
-            dt = datetime.strptime(date, '%Y-%m-%d')
-            m[dt.timestamp()] = date
+            m[business_review_map.get(temp)["stars_reviews"][date]["date_in_seconds"]] = date
         for date in business_review_map.get(temp)["stars_reviews"]:
-            dt = datetime.strptime(date, '%Y-%m-%d')
-            last_date_seconds = dt.timestamp() - 24 * 3600
+            cur_date_seconds = business_review_map.get(temp)["stars_reviews"][date]["date_in_seconds"]
             stars_reviews_item = business_review_map.get(temp)["stars_reviews"]
+            last_date_seconds = cur_date_seconds - 24 * 3600
             if last_date_seconds in m:
-                diff_stars = stars_reviews_item[date]["stars"] - stars_reviews_item[m.get(last_date_seconds)]["stars"]
+                diff_stars = stars_reviews_item[date]["avg_stars"] - stars_reviews_item[m.get(last_date_seconds)]["avg_stars"]
                 diff_review_amount = stars_reviews_item[date]["review_amount"] - stars_reviews_item[m.get(last_date_seconds)]["review_amount"]
                 if abs(max_diff_stars) < abs(diff_stars):
                     max_diff_stars = diff_stars
@@ -72,7 +87,7 @@ def add_stars_reviews_diff_in_business_review_map(business_review_map):
             stars_reviews_item[date]["diff_stars"] = diff_stars
             stars_reviews_item[date]["diff_review_amount"] = diff_review_amount
 
-            next_date_seconds = dt.timestamp() + 24 * 3600
+            next_date_seconds = cur_date_seconds + 24 * 3600
             if next_date_seconds not in m:
                 diff_review_amount = -stars_reviews_item[date]["review_amount"]
                 if abs(max_diff_review_amount) < abs(diff_review_amount):
@@ -81,66 +96,20 @@ def add_stars_reviews_diff_in_business_review_map(business_review_map):
                     stars_reviews_item[date]["diff_review_amount"] = diff_review_amount
         business_review_map.get(temp)["max_diff_stars"] = max_diff_stars
         business_review_map.get(temp)["max_diff_review_amount"] = max_diff_review_amount
+        business_review_map[temp]["abnormality_score"] = max_diff_stars + max_diff_review_amount
     return business_review_map
-
-
-def serialize_for_es(target_files, business_review_map, index_name, type_name):
-    count = 0
-    for temp in business_review_map:
-        if count % 10000 == 0:
-            fw = open(target_files[int(count/10000)], 'w', encoding='utf-8')
-            fw.write("[")
-        fw.write("{\"index\": {\"_index\": \"" + index_name + "\", \"_type\": \"" + type_name + "\", \"_id\": %d}}," % count)
-        fw.write(json.dumps(business_review_map.get(temp)))
-        count += 1
-        if count % 10000 == 0 or count == len(business_review_map):
-            fw.write("]")
-            fw.close()
-        else:
-            fw.write(",")
-
-
-def delete_serialize_for_es(target_file, index_name, type_name):
-    count = 0
-    fw = open(target_file, 'w', encoding='utf-8')
-    fw.write("[")
-    while count < 70000:
-        fw.write("{\"delete\": {\"_index\": \"" + index_name + "\", \"_type\": \"" + type_name + "\", \"_id\": %d}}," % count)
-        count += 1
-    fw.write("{\"delete\": {\"_index\": \"" + index_name + "\", \"_type\": \"" + type_name + "\", \"_id\": %d}}" % count)
-    fw.write("]")
-    fw.close()
-delete_serialize_for_es("delete_file.json", "yelp", "business1128v2")
-
-def files_name_gen(file_basic_name, number):
-    file_name_list = [file_basic_name + str(x) + ".json" for x in range(number)]
-    return file_name_list
 
 
 def construct_business_review_file(source_file_business, source_file_review, target_file_basic_name, target_file_number, index_name, type_name):
     business_map = get_business_map(source_file_business)
     business_review_map = get_business_review_map(source_file_review, business_map)
-    business_review_map_with_diff = add_stars_reviews_diff_in_business_review_map(business_review_map)
+    business_review_map_with_avg_stars = add_avg_stars_in_business_review_map(business_review_map)
+    business_review_map_with_diff = add_stars_reviews_diff_in_business_review_map(business_review_map_with_avg_stars)
     name_list = files_name_gen(target_file_basic_name, target_file_number)
     serialize_for_es(name_list, business_review_map_with_diff, index_name, type_name)
-# construct_business_review_file("yelp_academic_dataset_business.json", "yelp_academic_dataset_review.json", "target", 10, "yelp", "business1128v2")
-# construct_business_review_file("yelp_sample_business1M.json", "yelp_sample_review1M.json", "target", 5, "yelp", "business1128")
 
-
-def read_passage_for_test(source_file, target_file):
-    f1 = open(source_file, 'r')
-    passage = f1.read(1000)
-    f2 = open(target_file, 'w')
-    f2.write(passage)
-    f1.close()
-    f2.close()
-# read_passage_for_test("target.json", "target_sample.json")
-
-
-def count_lines(source_file):
-    f1 = open(source_file, 'r')
-    passage = f1.readlines()
-    print(len(passage))
-    f1.close()
-# count_lines("target0.json")
-
+    # name_list2 = files_name_gen("yelp_trend", 1)
+    # yelp_map = cal_yelp_trend(business_review_map_with_avg_stars)
+    # serialize_for_es(name_list2, yelp_map, "yelp", "yelp_trend")
+construct_business_review_file("yelp_academic_dataset_business.json", "yelp_academic_dataset_review.json", "target", 2, "yelp", "business1206")
+# construct_business_review_file("yelp_sample_business1M.json", "yelp_sample_review1M.json", "target1206", 1, "yelp", "business1206")
