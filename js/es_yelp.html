@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script><!--import D3-->
+    <script src="jquery-2.1.4.js"></script>
+    <script src="elasticsearch.jquery.js"></script>
+    <script src="elasticsearch.jquery.min.js"></script>
+    <script src="util_rank.js"></script>
+    <script src="util_bulk_create_delete.js"></script>
+    <script src="util_search.js"></script>
+    <style>
+        div {
+            display: inline-block;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="desc">
+        <p>Max Increase Review Amount -> Business Name(Top 10)</p>
+    </div>
+    <div id="desc2">
+        <p>Max Increase Review Amount -> Business Name(Next Page, 10 to 20)</p>
+    </div>
+    <p>=================================</p>
+    <div id="asc">
+        <p>Max Decrease Review Amount -> Business Name(Top 10)</p>
+    </div>
+    <div id="asc2">
+        <p>Max Decrease Review Amount -> Business Name(Top 10)</p>
+    </div>
+    <script type="text/javascript">
+    var client = new $.es.Client({
+        host: 'http://localhost:9200'
+    });
+    client.ping({
+        requestTimeout: 30000 // undocumented params are appended to the query string
+    }, function (error) {
+        if (error) {
+            console.error('elasticsearch cluster is down!');
+        } else {
+            console.log('All is well');
+            load_file_and_bulk_create("yelp_trend0.json");
+        }
+    });
+    </script>
+</body>
+</html>
