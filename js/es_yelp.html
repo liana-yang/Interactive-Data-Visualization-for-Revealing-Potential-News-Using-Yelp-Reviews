@@ -6,31 +6,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script><!--import D3-->
     <script src="jquery-2.1.4.js"></script>
     <script src="elasticsearch.jquery.js"></script>
-    <script src="elasticsearch.jquery.min.js"></script>
+    <script src="util_get_business_list_based_on_abnormality_score.js"></script>
+    <script src="util_get_review_details_within_time_range.js"></script>
+    <script src="util_get_significant_terms_within_time_range.js"></script>
+    <script src="util_search_box.js"></script>
     <script src="util_rank.js"></script>
-    <script src="util_bulk_create_delete.js"></script>
-    <script src="util_search.js"></script>
-    <style>
-        div {
-            display: inline-block;
-            margin-left: 10px;
-        }
-    </style>
 </head>
 <body>
-    <div id="desc">
-        <p>Max Increase Review Amount -> Business Name(Top 10)</p>
-    </div>
-    <div id="desc2">
-        <p>Max Increase Review Amount -> Business Name(Next Page, 10 to 20)</p>
-    </div>
-    <p>=================================</p>
-    <div id="asc">
-        <p>Max Decrease Review Amount -> Business Name(Top 10)</p>
-    </div>
-    <div id="asc2">
-        <p>Max Decrease Review Amount -> Business Name(Top 10)</p>
-    </div>
     <script type="text/javascript">
     var client = new $.es.Client({
         host: 'http://localhost:9200'
@@ -42,7 +24,10 @@
             console.error('elasticsearch cluster is down!');
         } else {
             console.log('All is well');
-            load_file_and_bulk_create("yelp_trend0.json");
+            //get_businesses_list_based_on_abnormality_score("yelp", "business1207v2", 10, "wi", "bars");
+            //get_review_details_within_time_range("yelp", "review1208v2", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "desc", "2012-11-01", "2014-12-01");
+            //get_significant_terms_in_review_details_within_time_range("yelp", "review1208v2", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "2012-11-01", "2014-12-01");
+            //search_box("yelp", 10, "starbucks, money");
         }
     });
     </script>
