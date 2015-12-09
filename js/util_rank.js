@@ -66,7 +66,7 @@ function sum_one_business_review_stars_in_time_interval(business, start_date, en
     var sum_stars_array = new Array(len);
     sum_stars_array.fill(0);
     $.each(business["_source"]["stars_reviews"], function(date) {
-        var seconds = Date.parse(date);
+        var seconds = business["_source"]["stars_reviews"][date]["date_in_seconds"] * 1000;
         if (seconds > new_start_seconds && seconds < end_seconds) {
             var amount = business["_source"]["stars_reviews"][date]["review_amount"];
             var stars = business["_source"]["stars_reviews"][date]["stars"];

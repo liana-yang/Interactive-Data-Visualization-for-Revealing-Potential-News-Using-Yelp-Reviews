@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-2.1.4.js"></script>
+    <script src="elasticsearch.jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script><!--import D3-->
+</head>
+<body>
+<script type="text/javascript">
+    var business_files_amount = 7;
+    var review_files_amount = 16;
+
+    var business_files_id = 0;
+    while (business_files_id <business_files_amount ) {
+        load_files_and_bulk_create("business" + business_files_id + ".json");
+        business_files_id++;
+    }
+    var review_files_id = 0;
+    while (review_files_id < review_files_amount) {
+        load_files_and_bulk_create("review" + review_files_id + ".json");
+        review_files_id++;
+    }
+    load_files_and_bulk_create("yelp_trend0.json");
+
+
+    function load_files_and_bulk_create(source_file_name) {
+        var client = new $.es.Client({
+            host: 'http://localhost:9200'
+        });
+        client.ping({
+            requestTimeout: 30000 // undocumented params are appended to the query string
+        }, function (error) {
+            if (error) {
+                console.error('elasticsearch cluster is down!');
+            } else {
+                console.log('All is well');
+                d3.text(source_file_name, function(json_array){
+                    var temp = JSON.parse(json_array);
+                    client.bulk({
+                        body: temp
+                    });
+                    console.log("done");
+                });
+            }
+        });
+    }
+</script>
+</body>
+</html>
