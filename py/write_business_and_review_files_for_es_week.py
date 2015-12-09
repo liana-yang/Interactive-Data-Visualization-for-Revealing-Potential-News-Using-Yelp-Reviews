@@ -114,5 +114,5 @@ def construct_business_review_file(source_file_business, source_file_review, tar
     name_list2 = files_name_gen("yelp_trend", 1)
     yelp_map = cal_yelp_trend(business_review_map_with_avg_stars)
     serialize_for_es(name_list2, yelp_map, "yelp", "yelp_trend", 100000)
-construct_business_review_file("yelp_academic_dataset_business.json", "yelp_academic_dataset_review.json", "business", 7, "yelp", "business1208v3")
+construct_business_review_file("yelp_academic_dataset_business.json", "yelp_academic_dataset_review.json", "business", 30, "yelp", "business1208v3")
 # construct_business_review_file("yelp_sample_business1M.json", "yelp_sample_review1M.json", "business", 1, "yelp", "business1208v3")
