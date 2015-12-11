@@ -1,12 +1,13 @@
 /**
  * Created by Jiaqiang on 12/6/2015.
  */
-function get_businesses_list_based_on_abnormality_score(index, type, business_number, location, category) {
+function get_businesses_list_based_on_abnormality_score(index, type, business_number, offset_number, location, category) {
     if (location == "" && category == "") {
         client.search({
             "index": index,
             "type": type,
             "size": business_number,
+            "from": offset_number,
             "sort": ["abnormality_score:desc"]
         }, function (error, business_list) {
             console.log(business_list);
@@ -19,6 +20,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
             "index": index,
             "type": type,
             "size": business_number,
+            "from": offset_number,
             "sort": ["abnormality_score:desc"],
             "body": {
                 "query": {
@@ -37,6 +39,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
             "index": index,
             "type": type,
             "size": business_number,
+            "from": offset_number,
             "sort": ["abnormality_score:desc"],
             "body": {
                 "query": {
@@ -55,6 +58,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
             "index": index,
             "type": type,
             "size": business_number,
+            "from": offset_number,
             "sort": ["abnormality_score:desc"],
             "body": {
                 "query": {
@@ -67,6 +71,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
                 }
             }
         }, function (error, business_list) {
+            console.log(business_list);
             return business_list["hits"]["hits"][0]["_source"];
         });
     }
