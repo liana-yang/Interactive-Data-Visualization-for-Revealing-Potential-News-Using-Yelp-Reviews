@@ -11,14 +11,12 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
             "sort": ["abnormality_score:desc"]
         }, function (error, business_list) {
             var businessList = business_list["hits"]["hits"];
-            console.log(businessList);
             var i = 0;
             var list_for_line = [];
             while (i < businessList.length) {
                 list_for_line[i] = get_date_and_review_amount(businessList[i]);
                 i++;
             }
-            console.log(list_for_line);
             renderBusinessList(businessList);
             renderLineCharts(businessList);
         });
@@ -39,12 +37,17 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
             }
         }, function (error, business_list) {
             var businessList = business_list["hits"]["hits"];
+            var i = 0;
+            var list_for_line = [];
+            while (i < businessList.length) {
+                list_for_line[i] = get_date_and_review_amount(businessList[i]);
+                i++;
+            }
             renderBusinessList(businessList);
             renderLineCharts(businessList);
         });
     }
     if (location != "" && category == "") {
-        console.log("aaddac");
         client.search({
             "index": index,
             "type": type,
@@ -59,7 +62,14 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
                 }
             }
         }, function (error, business_list) {
+            console.log(business_list);
             var businessList = business_list["hits"]["hits"];
+            var i = 0;
+            var list_for_line = [];
+            while (i < businessList.length) {
+                list_for_line[i] = get_date_and_review_amount(businessList[i]);
+                i++;
+            }
             renderBusinessList(businessList);
             renderLineCharts(businessList);
         });
@@ -85,6 +95,12 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
         }, function (error, business_list) {
             console.log(business_list);
             var businessList = business_list["hits"]["hits"];
+            var i = 0;
+            var list_for_line = [];
+            while (i < businessList.length) {
+                list_for_line[i] = get_date_and_review_amount(businessList[i]);
+                i++;
+            }
             renderBusinessList(businessList);
             renderLineCharts(businessList);
         });
