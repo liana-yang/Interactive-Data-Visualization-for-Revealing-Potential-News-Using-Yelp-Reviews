@@ -23,6 +23,9 @@ function renderBusinessList(businessList) {
     .on('click', function(businessName, i) {
       businessListClick(i);
     });
+  //d3.select('#previous-page').on('click', function() {
+  //
+  //});
 }
 
 function renderReviewList(reviewList) {

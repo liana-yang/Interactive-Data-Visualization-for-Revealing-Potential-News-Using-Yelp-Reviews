@@ -82,21 +82,25 @@ body {
 }
 
 #page-buttons li a {
+  width: 50%;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 50%;
 }
 
 .axis {
   fill: none;
-  stroke: #000;
+  stroke: #2E2E2E;
   stroke-width: 1;
   shape-rendering: crispEdges;
 }
 
 .axis .tick text {
-  fill: #000;
+  fill: #2E2E2E;
   stroke: none;
+}
+
+#review-list {
+  margin-top: -20px;
 }
 
 #review-list .table-responsive {
