@@ -1,12 +1,12 @@
 /**
  * Created by Jiaqiang on 12/6/2015.
  */
-function get_businesses_list_based_on_abnormality_score(index, type, business_number, offset_number, location, category) {
+function get_businesses_list_based_on_abnormality_score(index, type, size, offset_number, location, category) {
     if (location == "" && category == "") {
         client.search({
             "index": index,
             "type": type,
-            "size": business_number,
+            "size": size,
             "from": offset_number,
             "sort": ["abnormality_score:desc"]
         }, function (error, business_list) {
@@ -17,7 +17,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
         client.search({
             "index": index,
             "type": type,
-            "size": business_number,
+            "size": size,
             "from": offset_number,
             "sort": ["abnormality_score:desc"],
             "body": {
@@ -36,7 +36,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
         client.search({
             "index": index,
             "type": type,
-            "size": business_number,
+            "size": size,
             "from": offset_number,
             "sort": ["abnormality_score:desc"],
             "body": {
@@ -55,7 +55,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
         client.search({
             "index": index,
             "type": type,
-            "size": business_number,
+            "size": size,
             "from": offset_number,
             "sort": ["abnormality_score:desc"],
             "body": {
