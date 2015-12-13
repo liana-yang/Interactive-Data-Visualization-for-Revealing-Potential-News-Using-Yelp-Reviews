@@ -113,12 +113,14 @@
 <script src="js/util_re_rank.js" charset="utf-8"></script>
 <script src="js/util_search_box.js" charset="utf-8"></script>
 <script src="js/util_get_business_list_based_on_ids.js" charset="utf-8"></script>
+<script src="js/util_get_business_list_by_next_or_prev_button.js" charset="utf-8"></script>
 <script src="dashboard.js" charset="utf-8"></script>
 <script>
   var client = new $.es.Client({
       host: 'http://localhost:9200'
   });
   var global_business_list = [];
+  var global_next_prev_click_times = 1;
   //  client.ping({
   //    requestTimeout: 30000 // undocumented params are appended to the query string
   //  }, function (error) {
@@ -126,10 +128,12 @@
   //      console.error('elasticsearch cluster is down!');
   //    } else {
   //      console.log('All is well');
-  //get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 1000, "wi", "bars");
+  //get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 0, "wi", "bars");
+  get_business_list_by_next_button("yelp", "business1208v3", 10, "wi", "bars");
+  //get_business_list_by_prev_button("yelp", "business1208v3", 10, "wi", "bars");
   //get_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "desc", "2012-11-01", "2014-12-01");
   //get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "2012-11-01", "2014-12-01");
-  re_rank_in_date_range("yelp", "business1208v3", "2014-06-01", "2014-12-01");
+  //re_rank_in_date_range("yelp", "business1208v3", "2014-06-01", "2014-12-01");
   //search_box("yelp", 10, "starbucks, money");
   //get_business_list_based_on_ids("yelp", "business1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A");
 
