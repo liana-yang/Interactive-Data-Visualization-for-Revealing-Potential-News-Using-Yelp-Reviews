@@ -8,7 +8,13 @@ function re_rank_in_date_range(index, type, start_date, end_date) {
         "size": 10
     }, function (error, business_list) {
         var business_triples = rank_business_list_in_time_interval(business_list["hits"]["hits"], start_date, end_date);
-        renderBusinessListReRank(business_triples);
+        console.log(business_triples);
+        var pos = 0;
+        while (pos < business_triples.length) {
+            get_business_list_based_on_ids(index, type, business_triples[pos].business_id, pos);
+            pos++;
+        }
+        //renderBusinessListReRank(business_triples);
         //var business_ids_arr = business_triples.map(get_array_business_id);
         //get_business_list_based_on_ids(index, type, business_ids_arr.toString());//for line chart
     });
