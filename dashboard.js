@@ -1,67 +1,45 @@
 /**
  * Created by Shauro on 15/12/10.
  */
-//$(document).ready(function () {
-//  var client = new $.es.Client({
-//    host: 'http://localhost:9200'
-//  });
-//  client.ping({
-//    requestTimeout: 30000 // undocumented params are appended to the query string
-//  }, function (error) {
-//    if (error) {
-//      console.error('elasticsearch cluster is down!');
-//    } else {
-//      console.log('All is well');
-//      var businessList = get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 1000, "wi", "bars");
-//      //get_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "desc", "2012-11-01", "2014-12-01");
-//      //get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "2012-11-01", "2014-12-01");
-//      //re_rank_in_date_range("yelp", "business1208v3", "2014-01-01", "2014-12-01");
-//      //search_box("yelp", 10, "starbucks, money");
-//      console.log(businessList);
-//
-//      //Draw business list.
-//      var trSelection = d3.select('#business-list').select('tbody').selectAll('tr').data(businessList);
-//      trSelection.enter().append('tr');
-//      trSelection.exit().remove();
-//      var tdSelection = trSelection.append('td');
-//      tdSelection.text(function(d) {
-//        return d._source.business_id;
-//      });
-//      renderLineCharts();
-//    }
-//  });
-
-  //var businessList = [1,2,3,4,5,6,7,8,9,10]
-  //var trSelection = d3.select('#business-list').select('tbody').selectAll('tr').data(businessList);
-  //trSelection.enter().append('tr');
-  //trSelection.exit().remove();
-  //var tdSelection = trSelection.append('td');
-  //tdSelection.text(function(d) {
-  //  return d;
-  //});
-  //renderLineCharts();
-
-//  $(window).resize(function () {
-//    renderLineCharts();
-//  });
-//});
 
 function renderBusinessList(businessList) {
   var trSelection = d3.select('#business-list').select('tbody').selectAll('tr').data(businessList);
   trSelection.enter().append('tr');
   trSelection.exit().remove();
-  var tdSelection = trSelection.append('td')
+  var tdSelection = trSelection
+    .append('td')
     .text(function (d) {
 //        return d._source.business_id;
-    return d;
-  });
+      return d;
+    });
   var tbodySelection = d3.select('#business-list').select('tbody');
   tbodySelection
     .select('td:nth-child(1)')
     .classed('text-highlighted', true);
-  tdSelection.on('mouseover', function(businessName, i) {
-    businessListHighlight(i);
-  });
+  tdSelection
+    .on('mouseover', function (businessName, i) {
+      businessListHighlight(i);
+    })
+    .on('click', function(businessName, i) {
+      businessListClick(i);
+    });
+}
+
+function renderReviewList(reviewList) {
+  var trSelection = d3.select('#review-list').select('tbody').selectAll('tr').data(reviewList);
+  trSelection.enter().append('tr');
+  trSelection.exit().remove();
+  var timeSelection = trSelection
+    .append('td')
+    .text(function (d) {
+//        return d._source.business_id;
+      return d.time;
+    });
+  var reviewSelection = trSelection
+    .append('td')
+    .text(function (d) {
+      return d.review;
+    });
 }
 
 function renderLineCharts() {
@@ -118,3 +96,40 @@ function businessListHighlight(index) {
   tbodySelection.selectAll('td').classed('text-highlighted', false);
   tbodySelection.select('tr:nth-child(' + (index + 1 ) + ') td').classed('text-highlighted', true);
 }
+
+function businessListClick(index) {
+  var tbodySelection = d3.select('#business-list').select('tbody');
+  tbodySelection.selectAll('td').classed('text-clicked', false);
+  tbodySelection.select('tr:nth-child(' + (index + 1 ) + ') td').classed('text-clicked', true);
+}
+
+//Unused code.
+//$(document).ready(function () {
+//  var client = new $.es.Client({
+//    host: 'http://localhost:9200'
+//  });
+//  client.ping({
+//    requestTimeout: 30000 // undocumented params are appended to the query string
+//  }, function (error) {
+//    if (error) {
+//      console.error('elasticsearch cluster is down!');
+//    } else {
+//      console.log('All is well');
+//      var businessList = get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 1000, "wi", "bars");
+//      //get_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "desc", "2012-11-01", "2014-12-01");
+//      //get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "2012-11-01", "2014-12-01");
+//      //re_rank_in_date_range("yelp", "business1208v3", "2014-01-01", "2014-12-01");
+//      //search_box("yelp", 10, "starbucks, money");
+//      console.log(businessList);
+//
+//      //Draw business list.
+//      var trSelection = d3.select('#business-list').select('tbody').selectAll('tr').data(businessList);
+//      trSelection.enter().append('tr');
+//      trSelection.exit().remove();
+//      var tdSelection = trSelection.append('td');
+//      tdSelection.text(function(d) {
+//        return d._source.business_id;
+//      });
+//      renderLineCharts();
+//    }
+//  });

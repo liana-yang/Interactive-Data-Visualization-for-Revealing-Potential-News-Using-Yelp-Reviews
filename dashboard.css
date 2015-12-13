@@ -62,14 +62,29 @@ body {
   margin-top: 0;
 }
 
-#business-list.table-responsive{
-  height: 500px;
-  overflow-y: auto;
+#business-list .table-responsive {
+  height: 430px;
+  overflow-x: auto;
 }
 
-.text-highlighted{
+.text-highlighted {
   color: orange;
   font-weight: bold;
+}
+
+.text-clicked {
+  color: dodgerblue;
+  font-weight: bold;
+}
+
+#page-buttons {
+  margin-top: -40px;
+}
+
+#page-buttons li a {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 50%;
 }
 
 .axis {
@@ -84,7 +99,15 @@ body {
   stroke: none;
 }
 
-#review-list.table-responsive{
+#review-list .table-responsive {
   height: 200px;
   overflow-y: auto;
+}
+
+.path-highlighted {
+  stroke: orange;
+}
+
+.path-clicked {
+  stroke: dodgerblue;
 }
