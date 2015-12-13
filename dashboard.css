@@ -67,6 +67,11 @@ body {
   overflow-y: auto;
 }
 
+.text-highlighted{
+  color: orange;
+  font-weight: bold;
+}
+
 .axis {
   fill: none;
   stroke: #000;
@@ -79,7 +84,7 @@ body {
   stroke: none;
 }
 
-#review-list .table-responsive{
+#review-list.table-responsive{
   height: 200px;
   overflow-y: auto;
 }

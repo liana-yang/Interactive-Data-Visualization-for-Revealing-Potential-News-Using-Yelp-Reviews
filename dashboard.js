@@ -46,6 +46,24 @@
 //  });
 //});
 
+function renderBusinessList(businessList) {
+  var trSelection = d3.select('#business-list').select('tbody').selectAll('tr').data(businessList);
+  trSelection.enter().append('tr');
+  trSelection.exit().remove();
+  var tdSelection = trSelection.append('td')
+    .text(function (d) {
+//        return d._source.business_id;
+    return d;
+  });
+  var tbodySelection = d3.select('#business-list').select('tbody');
+  tbodySelection
+    .select('td:nth-child(1)')
+    .classed('text-highlighted', true);
+  tdSelection.on('mouseover', function(businessName, i) {
+    businessListHighlight(i);
+  });
+}
+
 function renderLineCharts() {
   drawReviewAmountLineChart();
 }
@@ -93,4 +111,10 @@ function drawReviewAmountLineChart() {
   //  })
   //  .y(yScale)
   //  .interpolate('linear');
+}
+
+function businessListHighlight(index) {
+  var tbodySelection = d3.select('#business-list').select('tbody');
+  tbodySelection.selectAll('td').classed('text-highlighted', false);
+  tbodySelection.select('tr:nth-child(' + (index + 1 ) + ') td').classed('text-highlighted', true);
 }
