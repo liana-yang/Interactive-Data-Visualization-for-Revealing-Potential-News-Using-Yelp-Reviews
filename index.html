@@ -130,7 +130,7 @@
   //      console.log('All is well');
   //get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 0, "wi", "bars");
   get_business_list_by_next_button("yelp", "business1208v3", 10, "wi", "bars");
-  //get_business_list_by_prev_button("yelp", "business1208v3", 10, "wi", "bars");
+  get_business_list_by_prev_button("yelp", "business1208v3", 10, "wi", "bars");
   //get_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "desc", "2012-11-01", "2014-12-01");
   //get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "2012-11-01", "2014-12-01");
   //re_rank_in_date_range("yelp", "business1208v3", "2014-06-01", "2014-12-01");
@@ -155,6 +155,12 @@
   //renderLineCharts(businessList);
   //    }
   //  });
+  $('#previous-page').on('click', function(d) {
+    get_business_list_by_prev_button("yelp", "business1208v3", 10, "wi", "bars");
+  });
+  $('#next-page').on('click', function(d) {
+    get_business_list_by_next_button("yelp", "business1208v3", 10, "wi", "bars");
+  });
   $(window).resize(function () {
     renderLineCharts();
   });

@@ -3,7 +3,9 @@
  */
 
 function renderBusinessList(businessList) {
-  var trSelection = d3.select('#business-list').select('tbody').selectAll('tr').data(businessList);
+  var tbodySelection = d3.select('#business-list').select('tbody');
+  tbodySelection.selectAll('*').remove();
+  var trSelection = tbodySelection.selectAll('tr').data(businessList);
   trSelection.enter().append('tr');
   trSelection.exit().remove();
   var tdSelection = trSelection
