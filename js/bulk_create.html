@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Bulk_create</title>
     <script src="jquery-2.1.4.js"></script>
-    <script src="elasticsearch.jquery.js"></script>
+    <script src="../elasticsearch.jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script><!--import D3-->
 </head>
 <body>
@@ -13,12 +13,12 @@
     var review_files_amount = 2;
 
     var business_files_id = 0;
-    while (business_files_id <business_files_amount ) {
+    while (business_files_id <1 ) {
         load_files_and_bulk_create("business" + business_files_id + ".json");
         business_files_id++;
     }
     var review_files_id = 0;
-    while (review_files_id < review_files_amount) {
+    while (review_files_id < 1) {
         load_files_and_bulk_create("review" + review_files_id + ".json");
         review_files_id++;
     }
