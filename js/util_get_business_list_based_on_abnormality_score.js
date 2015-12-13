@@ -20,7 +20,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
             }
             console.log(list_for_line);
             renderBusinessList(businessList);
-            renderLineCharts(businessList);
+            renderLineCharts(list_for_line);
         });
     }
     if (location == "" && category != "") {
@@ -39,8 +39,14 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
             }
         }, function (error, business_list) {
             var businessList = business_list["hits"]["hits"];
+            var i = 0;
+            var list_for_line = [];
+            while (i < businessList.length) {
+                list_for_line[i] = get_date_and_review_amount(businessList[i]);
+                i++;
+            }
             renderBusinessList(businessList);
-            renderLineCharts(businessList);
+            renderLineCharts(list_for_line);
         });
     }
     if (location != "" && category == "") {
@@ -60,8 +66,14 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
             }
         }, function (error, business_list) {
             var businessList = business_list["hits"]["hits"];
+            var i = 0;
+            var list_for_line = [];
+            while (i < businessList.length) {
+                list_for_line[i] = get_date_and_review_amount(businessList[i]);
+                i++;
+            }
             renderBusinessList(businessList);
-            renderLineCharts(businessList);
+            renderLineCharts(list_for_line);
         });
     }
     if (location != "" && category != "") {
@@ -85,8 +97,14 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
         }, function (error, business_list) {
             console.log(business_list);
             var businessList = business_list["hits"]["hits"];
+            var i = 0;
+            var list_for_line = [];
+            while (i < businessList.length) {
+                list_for_line[i] = get_date_and_review_amount(businessList[i]);
+                i++;
+            }
             renderBusinessList(businessList);
-            renderLineCharts(businessList);
+            renderLineCharts(list_for_line);
         });
     }
 }

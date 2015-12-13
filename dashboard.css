@@ -62,6 +62,10 @@ body {
   margin-top: 0;
 }
 
+#filters {
+  float: right;
+}
+
 #business-list .table-responsive {
   height: 430px;
   overflow-x: auto;
