@@ -5,12 +5,16 @@ function re_rank_in_date_range(index, type, start_date, end_date) {
     client.search({
         "index": index,
         "type": type,
-        "size": 100000
+        "size": 10
     }, function (error, business_list) {
-        var ret = rank_business_list_in_time_interval(business_list["hits"]["hits"], start_date, end_date);
-        console.log(ret);
-        return ret;
+        var business_triples = rank_business_list_in_time_interval(business_list["hits"]["hits"], start_date, end_date);
+        renderBusinessListReRank(business_triples);
+        //var business_ids_arr = business_triples.map(get_array_business_id);
+        //get_business_list_based_on_ids(index, type, business_ids_arr.toString());//for line chart
     });
+}
+function get_array_business_id(business_triple) {
+    return business_triple.business_id;
 }
 
 function rank_business_list_in_time_interval(business_array, start_date, end_date) {
@@ -37,13 +41,13 @@ function createPair(abnormality_score, business_id, business_name) {
     var triple = Object.create(Business_triple);
     triple.abnormality_score = abnormality_score;
     triple.business_id = business_id;
-    triple.business_name = business_name;
+    triple.name = business_name;
     return triple;
 }
 var Business_triple = {
     abnormality_score: 0,
     business_id: 0,
-    business_name: ""
+    name: ""
 };
 function calculate_one_business_abnormality_score_in_time_interval(business, start_date, end_date) {
     var max_diff_review_amount = 0;

@@ -105,18 +105,19 @@
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script src="https://code.jquery.com/jquery-1.11.3.js" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script><!--import D3-->
-<script src="elasticsearch.jquery.js" charset="utf-8"></script>
 <script src="js/jquery-2.1.4.js" charset="utf-8"></script>
+<script src="js/elasticsearch.jquery.js" charset="utf-8"></script>
 <script src="js/util_get_business_list_based_on_abnormality_score.js" charset="utf-8"></script>
 <script src="js/util_get_review_details_within_time_range.js" charset="utf-8"></script>
 <script src="js/util_get_significant_terms_within_time_range.js" charset="utf-8"></script>
 <script src="js/util_re_rank.js" charset="utf-8"></script>
 <script src="js/util_search_box.js" charset="utf-8"></script>
+<script src="js/util_get_business_list_based_on_ids.js" charset="utf-8"></script>
 <script src="dashboard.js" charset="utf-8"></script>
 <script>
-  //  var client = new $.es.Client({
-  //    host: 'http://localhost:9200'
-  //  });
+  var client = new $.es.Client({
+      host: 'http://localhost:9200'
+  });
   //  client.ping({
   //    requestTimeout: 30000 // undocumented params are appended to the query string
   //  }, function (error) {
@@ -124,11 +125,12 @@
   //      console.error('elasticsearch cluster is down!');
   //    } else {
   //      console.log('All is well');
-  //      var businessList = get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 1000, "wi", "bars");
+  //get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 1000, "wi", "bars");
   //get_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "desc", "2012-11-01", "2014-12-01");
   //get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "2012-11-01", "2014-12-01");
-  //re_rank_in_date_range("yelp", "business1208v3", "2014-01-01", "2014-12-01");
+  re_rank_in_date_range("yelp", "business1208v3", "2014-06-01", "2014-12-01");
   //search_box("yelp", 10, "starbucks, money");
+  //get_business_list_based_on_ids("yelp", "business1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A");
   //      console.log(businessList);
 
   //Draw business list.
@@ -144,8 +146,8 @@
     {'time': '2015-11-12', 'review': 'hello world'},
     {'time': '2015-11-12', 'review': 'hello world'}
   ];
-  renderBusinessList(businessList);
-  renderReviewList(reviewList);
+  //renderBusinessList(businessList);
+  //renderReviewList(reviewList);
   renderLineCharts();
   //    }
   //  });
