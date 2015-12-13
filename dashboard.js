@@ -10,7 +10,7 @@ function renderBusinessList(businessList) {
     .append('td')
     .text(function (d) {
 //        return d._source.business_id;
-      return d;
+      return d._source.name;
     });
   var tbodySelection = d3.select('#business-list').select('tbody');
   tbodySelection
@@ -28,6 +28,32 @@ function renderBusinessList(businessList) {
   //});
 }
 
+function renderBusinessListReRank(businessList) {//different input format compared with renderBusinessList
+  var trSelection = d3.select('#business-list').select('tbody').selectAll('tr').data(businessList);
+  trSelection.enter().append('tr');
+  trSelection.exit().remove();
+  var tdSelection = trSelection
+      .append('td')
+      .text(function (d) {
+//        return d._source.business_id;
+        return d.name;
+      });
+  var tbodySelection = d3.select('#business-list').select('tbody');
+  tbodySelection
+      .select('td:nth-child(1)')
+      .classed('text-highlighted', true);
+  tdSelection
+      .on('mouseover', function (businessName, i) {
+        businessListHighlight(i);
+      })
+      .on('click', function(businessName, i) {
+        businessListClick(i);
+      });
+  //d3.select('#previous-page').on('click', function() {
+  //
+  //});
+}
+
 function renderReviewList(reviewList) {
   var trSelection = d3.select('#review-list').select('tbody').selectAll('tr').data(reviewList);
   trSelection.enter().append('tr');
@@ -36,12 +62,12 @@ function renderReviewList(reviewList) {
     .append('td')
     .text(function (d) {
 //        return d._source.business_id;
-      return d.time;
+      return d._source.date;
     });
   var reviewSelection = trSelection
     .append('td')
     .text(function (d) {
-      return d.review;
+      return d._source.text;
     });
 }
 

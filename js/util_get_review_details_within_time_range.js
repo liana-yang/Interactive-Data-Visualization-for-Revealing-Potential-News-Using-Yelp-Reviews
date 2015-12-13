@@ -22,9 +22,7 @@ function get_review_details_within_time_range(index, type, business_ids, review_
                 }
             }
         }
-    }, function (error, business_list) {
-        console.log(business_list);
-        console.log(business_list["hits"]["hits"][0]["_source"]);
-        return business_list["hits"]["hits"][0]["_source"];
+    }, function (error, review_list) {
+        renderReviewList(review_list["hits"]["hits"])
     });
 }

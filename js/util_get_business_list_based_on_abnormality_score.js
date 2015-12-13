@@ -10,9 +10,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
             "from": offset_number,
             "sort": ["abnormality_score:desc"]
         }, function (error, business_list) {
-            console.log(business_list);
-            console.log(business_list["hits"]["hits"]);
-            return business_list["hits"]["hits"];
+            renderBusinessList(business_list["hits"]["hits"]);
         });
     }
     if (location == "" && category != "") {
@@ -30,7 +28,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
                 }
             }
         }, function (error, business_list) {
-            return business_list["hits"]["hits"];
+            renderBusinessList(business_list["hits"]["hits"]);
         });
     }
     if (location != "" && category == "") {
@@ -49,7 +47,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
                 }
             }
         }, function (error, business_list) {
-            return business_list["hits"]["hits"];
+            renderBusinessList(business_list["hits"]["hits"]);
         });
     }
     if (location != "" && category != "") {
@@ -71,8 +69,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
                 }
             }
         }, function (error, business_list) {
-            console.log(business_list);
-            return business_list["hits"]["hits"];
+            renderBusinessList(business_list["hits"]["hits"]);
         });
     }
 }
