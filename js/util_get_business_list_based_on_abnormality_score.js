@@ -10,7 +10,10 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
             "from": offset_number,
             "sort": ["abnormality_score:desc"]
         }, function (error, business_list) {
-            renderBusinessList(business_list["hits"]["hits"]);
+            console.log(business_list["hits"]["hits"]);
+            var businessList = business_list["hits"]["hits"];
+            renderBusinessList(businessList);
+            renderLineCharts(businessList);
         });
     }
     if (location == "" && category != "") {
@@ -28,7 +31,9 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
                 }
             }
         }, function (error, business_list) {
-            renderBusinessList(business_list["hits"]["hits"]);
+            var businessList = business_list["hits"]["hits"];
+            renderBusinessList(businessList);
+            renderLineCharts(businessList);
         });
     }
     if (location != "" && category == "") {
@@ -47,7 +52,9 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
                 }
             }
         }, function (error, business_list) {
-            renderBusinessList(business_list["hits"]["hits"]);
+            var businessList = business_list["hits"]["hits"];
+            renderBusinessList(businessList);
+            renderLineCharts(businessList);
         });
     }
     if (location != "" && category != "") {
@@ -69,7 +76,10 @@ function get_businesses_list_based_on_abnormality_score(index, type, business_nu
                 }
             }
         }, function (error, business_list) {
-            renderBusinessList(business_list["hits"]["hits"]);
+            console.log(business_list);
+            var businessList = business_list["hits"]["hits"];
+            renderBusinessList(businessList);
+            renderLineCharts(businessList);
         });
     }
 }

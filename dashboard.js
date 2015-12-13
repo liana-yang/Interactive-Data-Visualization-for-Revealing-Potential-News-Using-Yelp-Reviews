@@ -71,11 +71,11 @@ function renderReviewList(reviewList) {
     });
 }
 
-function renderLineCharts() {
-  drawReviewAmountLineChart();
+function renderLineCharts(lineChartData) {
+  drawReviewAmountLineChart(lineChartData);
 }
 
-function drawReviewAmountLineChart() {
+function drawReviewAmountLineChart(lineChartData) {
   var reviewContainer = $('#review-amount-line-chart');
   var lineChartHeight = $('#business-list').height() / 2;
   var lineChartWeight = reviewContainer.width();
@@ -87,10 +87,12 @@ function drawReviewAmountLineChart() {
     .classed('line-chart', true)
     .attr('height', lineChartHeight)
     .attr('width', lineChartWeight);
-  var xScale = d3.scale.linear().range([
+  var mindate = new Date(2004,1,1);
+  var maxdate = new Date(2015,12,31);
+  var xScale = d3.time.scale().range([
     50,
     lineChartWeight - 30
-  ]).domain([2005, 2015]);
+  ]).domain([mindate, maxdate]);
   var yScale = d3.scale.linear().range([
     lineChartHeight - 30,
     30
@@ -112,12 +114,33 @@ function drawReviewAmountLineChart() {
   var reviewContent = svgSelection.append('g')
     .attr('width', lineChartWeight)
     .attr('height', lineChartHeight);
-  //var line = d3.svg.line()
-  //  .x(function(data, i) {
-  //    return xScale(i);
-  //  })
-  //  .y(yScale)
-  //  .interpolate('linear');
+  var newData = [];
+  lineChartData.forEach(function(data) {
+    var tempArray = [];
+    var tempData = data._source.stars_reviews;
+    console.log(tempData);
+    tempData.forEach(function(data) {
+      var date = data.date_in_seconds;
+      var value = data.review_amount;
+      tempArray.push({'date': date, 'value': value})
+    });
+    newData.push(tempArray);
+  });
+  console.log(newData);
+  var line = d3.svg.line()
+    .x(function(data, i) {
+      return xScale(data._source.stars_reviews);
+    })
+    .y(yScale)
+    .interpolate('linear');
+  var reviewPath = reviewContent.selectAll('path').data(lineChartData);
+  reviewPath.enter().append('path');
+  reviewPath.classed('profile', true)
+    .attr('d', line(function(data) {
+      console.log(data);
+      return data;
+    }));
+  reviewPath.exit().remove();
 }
 
 function businessListHighlight(index) {
