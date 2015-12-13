@@ -118,6 +118,7 @@
   var client = new $.es.Client({
       host: 'http://localhost:9200'
   });
+  var global_business_list = [];
   //  client.ping({
   //    requestTimeout: 30000 // undocumented params are appended to the query string
   //  }, function (error) {
@@ -131,7 +132,6 @@
   re_rank_in_date_range("yelp", "business1208v3", "2014-06-01", "2014-12-01");
   //search_box("yelp", 10, "starbucks, money");
   //get_business_list_based_on_ids("yelp", "business1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A");
-  //      console.log(businessList);
 
   //Draw business list.
   var businessList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
