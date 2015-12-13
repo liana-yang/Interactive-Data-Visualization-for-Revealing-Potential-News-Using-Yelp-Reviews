@@ -16,9 +16,14 @@ function get_category_filter(index, type, cat_filter_num) {
                 }
             }
         }
-    }, function (error, category_filter) {
-        console.log(category_filter["aggregations"]["cat_filter_num"]["buckets"]);
-        global_category_filter = category_filter["aggregations"]["cat_filter_num"]["buckets"];
+    }, function (error, category_filters) {
+        console.log(category_filters["aggregations"]["cat_filter_num"]["buckets"]);
+        global_category_filter = category_filters["aggregations"]["cat_filter_num"]["buckets"].map(get_key());
+        console.log(global_category_filter);
         return category_filter["aggregations"]["cat_filter_num"]["buckets"];
     });
+}
+function get_key(category_filter) {
+    console.log(category_filter);
+    return category_filter["key"];
 }

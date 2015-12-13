@@ -11,12 +11,14 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
             "sort": ["abnormality_score:desc"]
         }, function (error, business_list) {
             var businessList = business_list["hits"]["hits"];
+            //get_date_and_review_amount(businessList[0]);
             var i = 0;
             var list_for_line = [];
             while (i < businessList.length) {
                 list_for_line[i] = get_date_and_review_amount(businessList[i]);
                 i++;
             }
+            console.log(list_for_line);
             renderBusinessList(businessList);
             renderLineCharts(businessList);
         });
@@ -107,15 +109,22 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
     }
 }
 function get_date_and_review_amount(business) {
-    var ret = [[]];
+    var ret = [];
     var i = 0;
+    var idx = 0;
+    while (idx < Object.keys(business["_source"]["stars_reviews"]).length) {
+        ret[idx] = {};
+        idx++;
+    }
     for (var date in business["_source"]["stars_reviews"]) {
         if (business["_source"]["stars_reviews"].hasOwnProperty(date)) {
-            ret[i][0] = date;
-            ret[i][1] = business["_source"]["stars_reviews"][date]["review_amount"];
-            ret[i][2] = business["_source"]["stars_reviews"][date]["avg_stars"];
+            ret[i]["date"] = date;
+            ret[i]["review_amount"] = business["_source"]["stars_reviews"][date]["review_amount"];
+            ret[i]["avg_stars"] = business["_source"]["stars_reviews"][date]["avg_stars"];
         }
+        i++;
     }
+    console.log(ret);
     return ret;
 }
 
