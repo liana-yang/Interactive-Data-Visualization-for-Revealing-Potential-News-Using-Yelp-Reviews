@@ -22,16 +22,16 @@ function renderBusinessList(businessList) {
     .on('mouseover', function (businessName, i) {
       businessListHighlight(i);
     })
-    .on('click', function(businessName, i) {
+    .on('click', function(business, i) {
       businessListClick(i);
+      get_review_details_within_time_range("yelp", "review1208v3", business._source.business_id, 100, "desc", "2012-11-01", "2014-12-01");
     });
-  //d3.select('#previous-page').on('click', function() {
-  //
-  //});
+  $('#business-list tbody tr:first-child td').trigger('click');
 }
 
 function renderBusinessListReRank(businessList) {//different input format compared with renderBusinessList
   var trSelection = d3.select('#business-list').select('tbody').selectAll('tr').data(businessList);
+  tbodySelection.selectAll('*').remove();
   trSelection.enter().append('tr');
   trSelection.exit().remove();
   var tdSelection = trSelection
@@ -51,13 +51,12 @@ function renderBusinessListReRank(businessList) {//different input format compar
       .on('click', function(businessName, i) {
         businessListClick(i);
       });
-  //d3.select('#previous-page').on('click', function() {
-  //
-  //});
 }
 
 function renderReviewList(reviewList) {
-  var trSelection = d3.select('#review-list').select('tbody').selectAll('tr').data(reviewList);
+  var tbodySelection = d3.select('#review-list').select('tbody');
+  tbodySelection.selectAll('*').remove();
+  var trSelection = tbodySelection.selectAll('tr').data(reviewList);
   trSelection.enter().append('tr');
   trSelection.exit().remove();
   var timeSelection = trSelection
@@ -116,33 +115,33 @@ function drawReviewAmountLineChart(lineChartData) {
   var reviewContent = svgSelection.append('g')
     .attr('width', lineChartWeight)
     .attr('height', lineChartHeight);
-  var newData = [];
-  lineChartData.forEach(function(data) {
-    var tempArray = [];
-    var tempData = data._source.stars_reviews;
-    console.log(tempData);
-    tempData.forEach(function(data) {
-      var date = data.date_in_seconds;
-      var value = data.review_amount;
-      tempArray.push({'date': date, 'value': value})
-    });
-    newData.push(tempArray);
-  });
-  console.log(newData);
-  var line = d3.svg.line()
-    .x(function(data, i) {
-      return xScale(data._source.stars_reviews);
-    })
-    .y(yScale)
-    .interpolate('linear');
-  var reviewPath = reviewContent.selectAll('path').data(lineChartData);
-  reviewPath.enter().append('path');
-  reviewPath.classed('profile', true)
-    .attr('d', line(function(data) {
-      console.log(data);
-      return data;
-    }));
-  reviewPath.exit().remove();
+  //var newData = [];
+  //lineChartData.forEach(function(data) {
+  //  var tempArray = [];
+  //  var tempData = data._source.stars_reviews;
+  //  console.log(tempData);
+  //  tempData.forEach(function(data) {
+  //    var date = data.date_in_seconds;
+  //    var value = data.review_amount;
+  //    tempArray.push({'date': date, 'value': value})
+  //  });
+  //  newData.push(tempArray);
+  //});
+  //console.log(newData);
+  //var line = d3.svg.line()
+  //  .x(function(data, i) {
+  //    return xScale(data._source.stars_reviews);
+  //  })
+  //  .y(yScale)
+  //  .interpolate('linear');
+  //var reviewPath = reviewContent.selectAll('path').data(lineChartData);
+  //reviewPath.enter().append('path');
+  //reviewPath.classed('profile', true)
+  //  .attr('d', line(function(data) {
+  //    console.log(data);
+  //    return data;
+  //  }));
+  //reviewPath.exit().remove();
 }
 
 function businessListHighlight(index) {

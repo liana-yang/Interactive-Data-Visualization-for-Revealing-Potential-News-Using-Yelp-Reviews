@@ -78,7 +78,7 @@ body {
 }
 
 #page-buttons {
-  margin-top: -40px;
+  margin-top: -20px;
 }
 
 #page-buttons li a {
@@ -106,6 +106,10 @@ body {
 #review-list .table-responsive {
   height: 200px;
   overflow-y: auto;
+}
+
+#review-list .table-responsive tr th:first-child {
+  width: 100px;
 }
 
 .path-highlighted {
