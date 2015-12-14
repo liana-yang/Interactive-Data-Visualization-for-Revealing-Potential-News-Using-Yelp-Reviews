@@ -30,7 +30,9 @@ function get_significant_terms_in_review_details_within_time_range(index, type, 
             }
         }
     }, function (error, most_sig_words) {
-        console.log(most_sig_words["aggregations"]["most_sig_words"]["buckets"]);
-        return most_sig_words["aggregations"]["most_sig_words"]["buckets"];
+        var wordList = most_sig_words["aggregations"]["most_sig_words"]["buckets"];
+        highlightWordInReview(wordList);
+        console.log(wordList);
+        return wordList;
     });
 }

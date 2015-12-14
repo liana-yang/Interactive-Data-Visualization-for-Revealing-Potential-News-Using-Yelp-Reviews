@@ -122,15 +122,18 @@ body {
 
 .path-highlighted {
   stroke: orange;
-  stroke-width: 3px;
+  stroke-opacity: 1;
 }
 
 .path-clicked {
   stroke: dodgerblue;
+  stroke-opacity: 1;
+  stroke-width: 2px;
 }
 
 rect.selection {
-  stroke: gray;
+  stroke: #088A29;
+  stroke-width: 1.5px;
   stroke-dasharray: 4px;
   stroke-opacity: 0.5;
   fill: transparent;
@@ -147,4 +150,8 @@ svg *::-moz-selection {
 
 svg *::-webkit-selection {
   background:transparent;
+}
+
+.review-text-highlighted {
+  font-weight: bold;
 }
