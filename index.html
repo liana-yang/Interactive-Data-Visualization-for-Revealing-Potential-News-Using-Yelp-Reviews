@@ -59,21 +59,16 @@
         <ul class="nav navbar-nav">
           <!--<input id="business-time" type="text" name="datefilter" value="">-->
           <li class="dropdown">
-            <a id="category-filter" class="dropdown-toggle" data-toggle="dropdown" href="#">Category
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Category
               <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Page 1-1</a></li>
-              <li><a href="#">Page 1-2</a></li>
-              <li><a href="#">Page 1-3</a></li>
+            <ul id="category-filter" class="dropdown-menu">
+              <!--<li><a href="#">Page 1-1</a></li>-->
             </ul>
           </li>
           <li class="dropdown">
-            <a id="location-filter" class="dropdown-toggle" data-toggle="dropdown" href="#">Location
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Location
               <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Page 1-1</a></li>
-              <li><a href="#">Page 1-2</a></li>
-              <li><a href="#">Page 1-3</a></li>
+            <ul id="location-filter" class="dropdown-menu">
             </ul>
           </li>
         </ul>
@@ -85,7 +80,9 @@
 <div class="container-fluid">
   <div id="business-list" class="col-sm-4 main">
     <h5 class="sub-header">Business List with Abnormal Score Ranking</h5>
-
+    <h6>Category: <span class="label label-info category-info">None</span>
+      Location: <span class="label label-info location-info">None</span></h6>
+    <h6></h6>
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
@@ -105,12 +102,23 @@
     </div>
 
   </div>
-  <div id="review-amount-line-chart" class="col-sm-8 main">
-  </div>
-  <div id="star-amount-line-chart" class="col-sm-8 main">
+  <div id="line-charts">
+    <div id="review-amount-line-chart" class="col-sm-8 main">
+    </div>
+    <div id="star-amount-line-chart" class="col-sm-8 main">
+    </div>
+    <div class="panel panel-info tooltip">
+      <div id="business-name" class="panel-heading">Business Name</div>
+      <div class="panel-body">
+        <h5>Review Amount</h5>
+        <span id="review-amount"></span>
+        <h5>Average Star</h5>
+        <span id="star-amount"></span>
+      </div>
+    </div>
   </div>
   <div id="review-list" class="col-sm-12 main">
-    <h5 class="sub-header">Reviews</h5>
+    <h5 class="sub-header">Reviews of Selected Business</h5>
 
     <div class="table-responsive">
       <table class="table table-striped">
@@ -152,11 +160,13 @@
                   "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
                   "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
                   "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-                  "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC"];
+                  "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC", "None"];
   var global_category_filter = [];
   var global_business_list = [];
-  var global_next_prev_click_times = 1;
+  var global_next_prev_click_times = 0;
   var clickedBusinessID = '';
+  var selectedCategoryFilter = '';
+  var selectedLocationFilter = '';
   //  client.ping({
   //    requestTimeout: 30000 // undocumented params are appended to the query string
   //  }, function (error) {
@@ -194,10 +204,10 @@
   //    }
   //  });
   $('#previous-page').on('click', function (d) {
-    get_business_list_by_prev_button("yelp", "business1208v3", 10, "", "");
+    get_business_list_by_prev_button("yelp", "business1208v3", 10, selectedLocationFilter, selectedCategoryFilter);
   });
   $('#next-page').on('click', function (d) {
-    get_business_list_by_next_button("yelp", "business1208v3", 10, "", "");
+    get_business_list_by_next_button("yelp", "business1208v3", 10, selectedLocationFilter, selectedCategoryFilter);
   });
 
   $('input[name="datefilter"]').daterangepicker({

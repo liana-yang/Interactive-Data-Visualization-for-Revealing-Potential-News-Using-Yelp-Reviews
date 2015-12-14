@@ -155,3 +155,23 @@ svg *::-webkit-selection {
 .review-text-highlighted {
   font-weight: bold;
 }
+
+.tooltip {
+  display: none;
+  width: 100px;
+  height: 100px;
+}
+
+.dropdown-menu {
+  height: 400px;
+  overflow-y: scroll;
+}
+
+#business-list {
+  text-align: center;
+}
+
+#review-list h5,
+#review-list thead th {
+  text-align: center;
+}

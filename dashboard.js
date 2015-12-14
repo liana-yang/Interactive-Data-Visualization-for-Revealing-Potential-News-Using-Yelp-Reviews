@@ -130,12 +130,17 @@ function drawReviewAmountLineChart(lineChartData) {
     .interpolate('linear');
   reviewPath.enter().append('path')
     .on('mousemove', function (data, i) {
+      var selection = $('#business-list tbody tr:nth-child(' + (i + 1) + ') td')
       businessListHighlight(i);
       reviewLineChartHighlight(i);
       starLineChartHighlight(i);
+      var pointer = d3.mouse(this);
+      var selectedDate = timeFormate(xScale.invert(pointer[0]));
+      //renderTooltip(selection.text(), selectedDate, data, [d3.event.x, d3.event.y]);
     })
     .on('click', function (data, i) {
-      $('#business-list tbody tr:nth-child(' + (i + 1) + ') td').trigger('click');
+      var selection = $('#business-list tbody tr:nth-child(' + (i + 1) + ') td')
+      selection.trigger('click');
     });
   reviewPath.classed('profile', true)
     .attr('d', line)
@@ -236,17 +241,9 @@ function drawReviewAmountLineChart(lineChartData) {
       var p = d3.mouse(this);
       timeRight = p[0];
       var leftDate = xScale.invert(timeLeft);
-      var month = leftDate.getMonth() + 1;
-      var day = leftDate.getDate();
-      var startDate = (1900 + leftDate.getYear()) + '-'
-        + (month > 9 ? "" + month: "0" + month) + '-'
-        + (day > 9 ? "" + day: "0" + day);
+      var startDate = timeFormate(leftDate);
       var rightDate = xScale.invert(timeRight);
-      month = rightDate.getMonth() + 1;
-      day = rightDate.getDate();
-      var endDate = (1900 + rightDate.getYear()) + '-'
-        + (month > 9 ? "" + month: "0" + month) + '-'
-        + (day > 9 ? "" + day: "0" + day);
+      var endDate = timeFormate(rightDate);
       console.log(startDate, endDate);
       console.log(window.clickedBusinessID);
       if (startDate != endDate) {
@@ -420,19 +417,10 @@ function drawStarAmountLineChart(lineChartData) {
       var p = d3.mouse(this);
       timeRight = p[0];
       var leftDate = xScale.invert(timeLeft);
-      var month = leftDate.getMonth() + 1;
-      var day = leftDate.getDate();
-      var startDate = (1900 + leftDate.getYear()) + '-'
-        + (month > 9 ? "" + month: "0" + month) + '-'
-        + (day > 9 ? "" + day: "0" + day);
+      var startDate = timeFormate(leftDate);
       var rightDate = xScale.invert(timeRight);
-      month = rightDate.getMonth() + 1;
-      day = rightDate.getDate();
-      var endDate = (1900 + rightDate.getYear()) + '-'
-        + (month > 9 ? "" + month: "0" + month) + '-'
-        + (day > 9 ? "" + day: "0" + day);
+      var endDate = timeFormate(rightDate);
       console.log(startDate, endDate);
-      console.log(window.clickedBusinessID);
       if (startDate != endDate) {
         get_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, "desc", startDate, endDate);
         get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, startDate, endDate);
@@ -444,6 +432,37 @@ function drawStarAmountLineChart(lineChartData) {
         reviewContent.selectAll('.selection').classed('selection', false);
       }
     });
+}
+
+function renderTooltip(businessName, selectedDate, data, pointer) {
+  var i = 0;
+  var reviewAmount = 0;
+  var starAmount = 0;
+  console.log(data);
+  while (i < data.length) {
+    if (data[i].date == selectedDate) {
+      reviewAmount = data[i].review_amount;
+      starAmount = data[i].avg_stars;
+      break;
+    }
+    i++;
+  }
+  console.log(reviewAmount, starAmount);
+  d3.select('.tooltip').style({
+    'display': 'block',
+    'top': pointer[1] + 'px',
+    'left': pointer[0] + 'px'
+  });
+  d3.select('#business-name').text(businessName);
+  d3.select('#review-amount').text(reviewAmount);
+  d3.select('#star-amount').text(starAmount);
+  //.addClass('panel panel-info tooltip');
+  //panelSelection.attr('transform', 'translate(' + pointer[0] + ', ' + pointer[1] + ')');
+  //var tooltipHeading = panelSelection.append('div')
+  //  .addClass('panel-heading')
+  //  .text(businessName);
+  //var tooltipBody = panelSelection.append('div')
+  //  .addClass('panel-body');
 }
 
 function businessListHighlight(index) {
@@ -501,14 +520,16 @@ function highlight_words(keywords, element) {
   var color = d3.scale.category20().range()
     .concat(d3.scale.category20b().range())
     .concat(d3.scale.category20c().range());
-  if(keywords) {
+  if (keywords) {
     var textNodes;
     keywords = keywords.replace(/\W/g, '');
     var str = keywords.split(" ");
-    $(str).each(function() {
+    $(str).each(function () {
       var term = this;
-      var textNodes = element.contents().filter(function() { return this.nodeType === 3 });
-      textNodes.each(function() {
+      var textNodes = element.contents().filter(function () {
+        return this.nodeType === 3
+      });
+      textNodes.each(function () {
         var content = $(this).text();
         var regex = new RegExp(term, "gi");
         content = content.replace(regex, '<span class="review-text-highlighted keyword-' + keywords + '">' + term + '</span>');
@@ -533,6 +554,56 @@ function hashString(s) {
   return result;
 }
 
+function timeFormate(date) {
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  var formatDate = (1900 + date.getYear()) + '-'
+    + (month > 9 ? "" + month : "0" + month) + '-'
+    + (day > 9 ? "" + day : "0" + day);
+  return formatDate;
+}
+
+function renderCategoryFilter(categoryList) {
+  var dropdown = d3.select('#category-filter');
+  dropdown.selectAll('*').remove();
+  var filterSelection = dropdown.selectAll('a').data(categoryList);
+  var listSelection = filterSelection.enter().append('li')
+    .classed('category-filter', true);
+  listSelection.append('a').text(function(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  })
+    .on('click', function(category) {
+      global_next_prev_click_times = 0;
+      if (category == 'None') {
+        category = '';
+      }
+      window.selectedCategoryFilter = category;
+      d3.select('.category-info').text(category.charAt(0).toUpperCase() + category.slice(1));
+      get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 0, window.selectedLocationFilter, category);
+    });
+  filterSelection.exit().remove();
+}
+
+function renderLocation_filter() {
+  var dropdown = d3.select('#location-filter');
+  dropdown.selectAll('*').remove();
+  var filterSelection = dropdown.selectAll('a').data(global_state_filter);
+  var listSelection = filterSelection.enter().append('li')
+    .classed('location-filter', true);
+  listSelection.append('a').text(function(text) {
+      return text;
+    })
+    .on('click', function(location) {
+      global_next_prev_click_times = 0;
+      if (location == 'None') {
+        location = '';
+      }
+      window.selectedLocationFilter = location;
+      d3.select('.location-info').text(location);
+      get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 0, location, window.selectedCategoryFilter);
+    });
+  filterSelection.exit().remove();
+}
 
 //Unused code.
 //$(document).ready(function () {

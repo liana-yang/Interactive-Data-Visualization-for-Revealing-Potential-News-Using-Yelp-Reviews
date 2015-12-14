@@ -114,5 +114,8 @@ function renderFunctions(business_list) {
     $(window).resize(function () {
         renderLineCharts(list_for_line);
     });
+
+    get_category_filter("yelp", "business1208v3", 50);
+    renderLocation_filter();
 }
 
