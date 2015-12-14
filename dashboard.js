@@ -56,7 +56,7 @@ function renderBusinessList(businessList) {
 //      });
 //}
 
-function renderReviewList(reviewList) {
+function renderReviewList(reviewList, startDate, endDate) {
   var tbodySelection = d3.select('#review-list').select('tbody');
   tbodySelection.selectAll('*').remove();
   var trSelection = tbodySelection.selectAll('tr').data(reviewList);
@@ -72,6 +72,10 @@ function renderReviewList(reviewList) {
     .text(function (d) {
       return d._source.text;
     });
+  if (window.reviewListRendered) {
+    get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 10, startDate, endDate);
+  }
+  window.reviewListRendered = false;
 }
 
 function renderLineCharts(lineChartData) {
@@ -247,8 +251,9 @@ function drawReviewAmountLineChart(lineChartData) {
       console.log(startDate, endDate);
       console.log(window.clickedBusinessID);
       if (startDate != endDate) {
+        window.reviewListRendered = true;
         get_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, "asc", startDate, endDate);
-        get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 10, startDate, endDate);
+        //get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 10, startDate, endDate);
       }
     })
     .on('mouseout', function () {
@@ -422,8 +427,9 @@ function drawStarAmountLineChart(lineChartData) {
       var endDate = timeFormate(rightDate);
       console.log(startDate, endDate);
       if (startDate != endDate) {
+        window.reviewListRendered = true;
         get_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, "asc", startDate, endDate);
-        get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 10, startDate, endDate);
+        //get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 10, startDate, endDate);
       }
     })
     .on('mouseout', function () {

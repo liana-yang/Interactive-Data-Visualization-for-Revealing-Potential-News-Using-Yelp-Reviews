@@ -177,6 +177,7 @@
   var clickedBusinessID = '';
   var selectedCategoryFilter = '';
   var selectedLocationFilter = '';
+  var reviewListRendered = false;
   //  client.ping({
   //    requestTimeout: 30000 // undocumented params are appended to the query string
   //  }, function (error) {
@@ -213,6 +214,7 @@
   //renderLineCharts(businessList);
   //    }
   //  });
+
   $('#previous-page').on('click', function (d) {
     get_business_list_by_prev_button("yelp", "business1208v3", 10, selectedLocationFilter, selectedCategoryFilter);
   });
