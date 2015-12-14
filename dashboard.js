@@ -574,11 +574,11 @@ function renderCategoryFilter(categoryList) {
   })
     .on('click', function(category) {
       global_next_prev_click_times = 0;
+      d3.select('.category-info').text(category.charAt(0).toUpperCase() + category.slice(1));
       if (category == 'None') {
         category = '';
       }
       window.selectedCategoryFilter = category;
-      d3.select('.category-info').text(category.charAt(0).toUpperCase() + category.slice(1));
       get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 0, window.selectedLocationFilter, category);
     });
   filterSelection.exit().remove();
@@ -595,11 +595,11 @@ function renderLocation_filter() {
     })
     .on('click', function(location) {
       global_next_prev_click_times = 0;
+      d3.select('.location-info').text(location);
       if (location == 'None') {
         location = '';
       }
       window.selectedLocationFilter = location;
-      d3.select('.location-info').text(location);
       get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 0, location, window.selectedCategoryFilter);
     });
   filterSelection.exit().remove();
