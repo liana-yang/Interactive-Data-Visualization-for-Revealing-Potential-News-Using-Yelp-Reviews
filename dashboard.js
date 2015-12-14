@@ -21,10 +21,11 @@ function renderBusinessList(businessList) {
       businessListHighlight(i);
       reviewLineChartHighlight(i);
     })
-    .on('click', function(business, i) {
+    .on('click', function (business, i) {
       businessListClick(i);
       reviewLineChartClick(i);
-      get_review_details_within_time_range("yelp", "review1208v3", business._source.business_id, 100, "desc", "2012-11-01", "2014-12-01");
+      window.clickedBusinessID = business._source.business_id;
+      get_review_details_within_time_range("yelp", "review1208v3", business._source.business_id, 100, "desc", "2005-01-01", "2014-12-31");
     });
 }
 
@@ -87,10 +88,10 @@ function drawReviewAmountLineChart(lineChartData) {
     .classed('line-chart', true)
     .attr('height', lineChartHeight)
     .attr('width', lineChartWeight);
-  var mindate = new Date(2014,1,1);
-  var maxdate = new Date(2014,12,31);
+  var mindate = new Date(2005, 1, 1);
+  var maxdate = new Date(2014, 12, 31);
   var xScale = d3.time.scale().range([
-    50,
+    30,
     lineChartWeight - 30
   ]).domain([mindate, maxdate]);
   var yScale = d3.scale.linear().range([
@@ -110,28 +111,27 @@ function drawReviewAmountLineChart(lineChartData) {
     .append('svg:g').call(yAxis)
     .classed('axis', true)
     .classed('y', true)
-    .attr('transform', 'translate(50, 0)');
+    .attr('transform', 'translate(30, 0)');
   var reviewContent = svgSelection.append('g')
     .classed('review-content', true)
     .attr('width', lineChartWeight)
     .attr('height', lineChartHeight);
   var reviewPath = reviewContent.selectAll('path').data(lineChartData);
   var line = d3.svg.line()
-    .x(function(data) {
+    .x(function (data) {
       return xScale(new Date(data.date));
     })
-    .y(function(data) {
+    .y(function (data) {
       return yScale(data.review_amount);
     })
     .interpolate('linear');
   reviewPath.enter().append('path')
-    .on('mousemove', function(data, i) {
+    .on('mousemove', function (data, i) {
       businessListHighlight(i);
       reviewLineChartHighlight(i);
     })
-    .on('click', function(data, i) {
-      businessListClick(i);
-      reviewLineChartClick(i);
+    .on('click', function (data, i) {
+      $('#business-list tbody tr:nth-child(' + (i + 1) + ') td').trigger('click');
     });
   reviewPath.classed('profile', true)
     .attr('d', line)
@@ -140,6 +140,120 @@ function drawReviewAmountLineChart(lineChartData) {
     .attr('stroke-width', 1.5);
   reviewPath.exit().remove();
   $('#business-list tbody tr:first-child td').trigger('click');
+
+  // Drag Selection.
+  var timeLeft = 0;
+  var timeRight = 0;
+  var drag = d3.behavior.drag()
+    .on('drag', function (d, i) {
+      var selection = d3.selectAll('.selected');
+      if (selection[0].indexOf(this) == -1) {
+        selection.classed('selected', false);
+        selection = d3.select(this);
+        selection.classed('selected', true);
+      }
+      selection.attr('transform', function (d, i) {
+        d.x += d3.event.dx;
+        d.y += d3.event.dy;
+        return 'translate(' + [d.x, d.y] + ')';
+      });
+      this.parentNode.appendChild(this);
+      d3.event.sourceEvent.stopPropagation();
+    });
+  reviewPath.call(drag);
+  svgSelection
+    .on('mousedown', function () {
+      if (!d3.event.ctrlKey) {
+        d3.selectAll('path.selected').classed('selected', false);
+      }
+      var p = d3.mouse(this);
+      timeLeft = p[0];
+      reviewContent.append('rect')
+        .attr({
+          rx: 6,
+          ry: 6,
+          class: 'selection',
+          x: p[0],
+          y: p[1],
+          width: 0,
+          height: 0
+        });
+    })
+    .on('mousemove', function () {
+      var s = reviewContent.select('rect.selection');
+      if (!s.empty()) {
+        var p = d3.mouse(this),
+          d = {
+            x: parseInt(s.attr('x'), 10),
+            y: parseInt(s.attr('y'), 10),
+            width: parseInt(s.attr('width'), 10),
+            height: parseInt(s.attr('height'), 10)
+          },
+          move = {
+            x: p[0] - d.x,
+            y: p[1] - d.y
+          };
+        if (move.x < 1 || (move.x * 2 < d.width)) {
+          d.x = p[0];
+          d.width -= move.x;
+        }
+        else {
+          d.width = move.x;
+        }
+        if (move.y < 1 || (move.y * 2 < d.height)) {
+          d.y = p[1];
+          d.height -= move.y;
+        }
+        else {
+          d.height = move.y;
+        }
+        s.attr(d);
+        // deselect all temporary selected state objects
+        reviewContent.selectAll('.selection.selected').classed('selected', false);
+        //reviewContent.selectAll('g.state >circle.inner').each( function( state_data, i) {
+        //  if(
+        //    !d3.select(this).classed('selected') &&
+        //      // inner circle inside selection frame
+        //    state_data.x-radius>=d.x && state_data.x+radius<=d.x+d.width &&
+        //    state_data.y-radius>=d.y && state_data.y+radius<=d.y+d.height
+        //  ) {
+        //
+        //    d3.select( this.parentNode)
+        //      .classed( "selection", true)
+        //      .classed( "selected", true);
+        //  }
+        //});
+      }
+    })
+    .on('mouseup', function () {
+      reviewContent.selectAll('rect.selection').remove();
+      reviewContent.selectAll('.selection').classed('selection', false);
+      var p = d3.mouse(this);
+      timeRight = p[0];
+      var leftDate = xScale.invert(timeLeft);
+      var month = leftDate.getMonth() + 1;
+      var day = leftDate.getDate();
+      var startDate = (1900 + leftDate.getYear()) + '-'
+        + (month > 9 ? "" + month: "0" + month) + '-'
+        + (day > 9 ? "" + day: "0" + day);
+      var rightDate = xScale.invert(timeRight);
+      month = rightDate.getMonth() + 1;
+      day = rightDate.getDate();
+      var endDate = (1900 + rightDate.getYear()) + '-'
+        + (month > 9 ? "" + month: "0" + month) + '-'
+        + (day > 9 ? "" + day: "0" + day);
+      console.log(startDate, endDate);
+      console.log(window.clickedBusinessID);
+      if (startDate != endDate) {
+        get_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, "desc", startDate, endDate);
+      }
+    })
+    .on('mouseout', function () {
+      if (d3.event.relatedTarget.tagName == 'HTML') {
+        reviewContent.selectAll('rect.selection').remove();
+        reviewContent.selectAll('.selection').classed('selection', false);
+      }
+    });
 }
 
 function businessListHighlight(index) {
