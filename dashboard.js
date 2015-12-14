@@ -88,8 +88,8 @@ function drawReviewAmountLineChart(lineChartData) {
     .classed('line-chart', true)
     .attr('height', lineChartHeight)
     .attr('width', lineChartWeight);
-  var mindate = new Date(2004,1,1);
-  var maxdate = new Date(2015,12,31);
+  var mindate = new Date(2014,1,1);
+  var maxdate = new Date(2014,12,31);
   var xScale = d3.time.scale().range([
     50,
     lineChartWeight - 30
@@ -97,7 +97,7 @@ function drawReviewAmountLineChart(lineChartData) {
   var yScale = d3.scale.linear().range([
     lineChartHeight - 30,
     30
-  ]).domain([0, 100]);
+  ]).domain([0, 50]);
   var xAxis = d3.svg.axis()
     .scale(xScale).orient('bottom');
   var yAxis = d3.svg.axis()
@@ -115,20 +115,28 @@ function drawReviewAmountLineChart(lineChartData) {
   var reviewContent = svgSelection.append('g')
     .attr('width', lineChartWeight)
     .attr('height', lineChartHeight);
+  console.log(lineChartData);
   var reviewPath = reviewContent.selectAll('path').data(lineChartData);
   var line = d3.svg.line()
     .x(function(data) {
-      return xScale(new Date(data[0]));
+      //console.log(data);
+      return xScale(new Date(data.date));
     })
     .y(function(data) {
-      return yScale(data[1]);
+      return yScale(data.review_amount);
     })
     .interpolate('linear');
-  reviewPath.enter().append('path');
+  reviewPath.enter().append('path')
+    .on('mousemove', function() {
+      reviewContent.selectAll('path').classed('path-highlighted', false);
+      d3.select(d3.event.target).classed('path-highlighted', true);
+    });
   reviewPath.classed('profile', true)
     .attr('d', line)
-    .attr('stroke', 'red');
+    .attr('fill', 'none')
+    .attr('stroke', 'gray');
   reviewPath.exit().remove();
+
 }
 
 function businessListHighlight(index) {

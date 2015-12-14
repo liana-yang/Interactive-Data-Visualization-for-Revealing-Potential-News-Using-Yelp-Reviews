@@ -10,17 +10,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
             "from": offset_number,
             "sort": ["abnormality_score:desc"]
         }, function (error, business_list) {
-            var businessList = business_list["hits"]["hits"];
-            //get_date_and_review_amount(businessList[0]);
-            var i = 0;
-            var list_for_line = [];
-            while (i < businessList.length) {
-                list_for_line[i] = get_date_and_review_amount(businessList[i]);
-                i++;
-            }
-            console.log(list_for_line);
-            renderBusinessList(businessList);
-            renderLineCharts(list_for_line);
+            renderFunctions(business_list);
         });
     }
     if (location == "" && category != "") {
@@ -38,15 +28,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
                 }
             }
         }, function (error, business_list) {
-            var businessList = business_list["hits"]["hits"];
-            var i = 0;
-            var list_for_line = [];
-            while (i < businessList.length) {
-                list_for_line[i] = get_date_and_review_amount(businessList[i]);
-                i++;
-            }
-            renderBusinessList(businessList);
-            renderLineCharts(list_for_line);
+            renderFunctions(business_list);
         });
     }
     if (location != "" && category == "") {
@@ -64,16 +46,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
                 }
             }
         }, function (error, business_list) {
-            console.log(business_list);
-            var businessList = business_list["hits"]["hits"];
-            var i = 0;
-            var list_for_line = [];
-            while (i < businessList.length) {
-                list_for_line[i] = get_date_and_review_amount(businessList[i]);
-                i++;
-            }
-            renderBusinessList(businessList);
-            renderLineCharts(list_for_line);
+            renderFunctions(business_list);
         });
     }
     if (location != "" && category != "") {
@@ -95,16 +68,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
                 }
             }
         }, function (error, business_list) {
-            console.log(business_list);
-            var businessList = business_list["hits"]["hits"];
-            var i = 0;
-            var list_for_line = [];
-            while (i < businessList.length) {
-                list_for_line[i] = get_date_and_review_amount(businessList[i]);
-                i++;
-            }
-            renderBusinessList(businessList);
-            renderLineCharts(list_for_line);
+            renderFunctions(business_list);
         });
     }
 }
@@ -124,7 +88,31 @@ function get_date_and_review_amount(business) {
         }
         i++;
     }
-    console.log(ret);
+    ret.sort(compareBusinessTimeAscend);
     return ret;
+}
+
+function compareBusinessTimeAscend(business1, business2) {
+    if (business1.date <= business2.date) {
+        return -1;
+    } else {
+        return 1;
+    }
+}
+
+function renderFunctions(business_list) {
+    console.log(business_list);
+    var businessList = business_list["hits"]["hits"];
+    var i = 0;
+    var list_for_line = [];
+    while (i < businessList.length) {
+        list_for_line[i] = get_date_and_review_amount(businessList[i]);
+        i++;
+    }
+    renderBusinessList(businessList);
+    renderLineCharts(list_for_line);
+    $(window).resize(function () {
+        renderLineCharts(list_for_line);
+    });
 }
 

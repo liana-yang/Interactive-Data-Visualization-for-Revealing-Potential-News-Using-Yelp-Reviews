@@ -193,13 +193,10 @@
   //    }
   //  });
   $('#previous-page').on('click', function (d) {
-    get_business_list_by_prev_button("yelp", "business1208v3", 10, "wi", "bars");
+    get_business_list_by_prev_button("yelp", "business1208v3", 10, "", "");
   });
   $('#next-page').on('click', function (d) {
-    get_business_list_by_next_button("yelp", "business1208v3", 10, "wi", "bars");
-  });
-  $(window).resize(function () {
-    renderLineCharts();
+    get_business_list_by_next_button("yelp", "business1208v3", 10, "", "");
   });
 
   $('input[name="datefilter"]').daterangepicker({
@@ -208,11 +205,9 @@
       cancelLabel: 'Clear'
     }
   });
-
   $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
     $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
   });
-
   $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
     $(this).val('');
   });
