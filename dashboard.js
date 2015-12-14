@@ -100,7 +100,7 @@ function drawReviewAmountLineChart(lineChartData) {
   var yScale = d3.scale.linear().range([
     lineChartHeight - 30,
     30
-  ]).domain([0, 50]);
+  ]).domain([0, global_line_chart_max_review_amount]);
   var xAxis = d3.svg.axis()
     .scale(xScale).orient('bottom');
   var yAxis = d3.svg.axis()
@@ -248,7 +248,7 @@ function drawReviewAmountLineChart(lineChartData) {
       console.log(window.clickedBusinessID);
       if (startDate != endDate) {
         get_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, "desc", startDate, endDate);
-        get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, startDate, endDate);
+        get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 10, startDate, endDate);
       }
     })
     .on('mouseout', function () {
@@ -423,7 +423,7 @@ function drawStarAmountLineChart(lineChartData) {
       console.log(startDate, endDate);
       if (startDate != endDate) {
         get_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, "desc", startDate, endDate);
-        get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, startDate, endDate);
+        get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 10, startDate, endDate);
       }
     })
     .on('mouseout', function () {
@@ -502,18 +502,11 @@ function starLineChartClick(index) {
 }
 
 function highlightWordInReview(wordList) {
-  //wordList.forEach(function(word, i) {
-  var i = 0;
-  while (i < wordList.length) {
-    if (i >= 10) {
-      break;
-    }
+  wordList.forEach(function(word, i) {
     var tdSelection = $('#review-list tbody tr td:nth-child(2)');
     //highlight_words(word.key, tdSelection);
-    highlight_words(wordList[i].key, tdSelection);
-    i++;
-  }
-  //});
+    highlight_words(word.key, tdSelection);
+  });
 }
 
 function highlight_words(keywords, element) {

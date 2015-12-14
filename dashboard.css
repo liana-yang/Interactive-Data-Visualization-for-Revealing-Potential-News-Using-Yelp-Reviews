@@ -162,7 +162,7 @@ svg *::-webkit-selection {
   height: 100px;
 }
 
-.dropdown-menu {
+.dropdown-filter {
   height: 400px;
   overflow-y: scroll;
 }
@@ -171,7 +171,11 @@ svg *::-webkit-selection {
   text-align: center;
 }
 
-#review-list h5,
+/*#review-list h5,*/
 #review-list thead th {
   text-align: center;
+}
+
+#business-time input {
+  width: 185px;
 }

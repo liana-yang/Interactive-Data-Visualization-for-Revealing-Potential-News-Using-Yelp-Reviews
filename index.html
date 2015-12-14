@@ -55,20 +55,25 @@
           <input type="text" class="form-control" placeholder="Search...">
         </form>
       </div>
+      <div id="business-time">
+        <form class="navbar-form navbar-right">
+          <input type="text" class="form-control" name="datefilter" placeholder="01/01/2004-12/31/2014">
+        </form>
+      </div>
       <div id="filters">
         <ul class="nav navbar-nav">
           <!--<input id="business-time" type="text" name="datefilter" value="">-->
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Category
               <span class="caret"></span></a>
-            <ul id="category-filter" class="dropdown-menu">
+            <ul id="category-filter" class="dropdown-menu dropdown-filter">
               <!--<li><a href="#">Page 1-1</a></li>-->
             </ul>
           </li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Location
               <span class="caret"></span></a>
-            <ul id="location-filter" class="dropdown-menu">
+            <ul id="location-filter" class="dropdown-menu dropdown-filter">
             </ul>
           </li>
         </ul>
@@ -165,6 +170,7 @@
   var global_business_list = [];
   var global_next_prev_click_times = 0;
   var global_line_chart_start_time = "2010-01-01";
+  var global_line_chart_end_time = "2014-12-31";
   var global_line_chart_max_review_amount = 0;
   var clickedBusinessID = '';
   var selectedCategoryFilter = '';
@@ -220,6 +226,9 @@
   });
   $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
     $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+    global_line_chart_start_time = picker.startDate.format('YYYY-MM-DD');
+    global_line_chart_end_time = picker.endDate.format('YYYY-MM-DD');
+    console.log(global_line_chart_start_time);
   });
   $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
     $(this).val('');

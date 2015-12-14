@@ -82,7 +82,7 @@ function get_date_and_review_amount(business) {
     }
     for (var date in business["_source"]["stars_reviews"]) {
         if (business["_source"]["stars_reviews"].hasOwnProperty(date)) {
-            //if (date >= global_line_chart_start_time) {
+            //if (date >= global_line_chart_start_time && date <= global_line_chart_end_time) {
                 ret[i]["date"] = date;
                 ret[i]["review_amount"] = business["_source"]["stars_reviews"][date]["review_amount"];
                 ret[i]["avg_stars"] = business["_source"]["stars_reviews"][date]["avg_stars"];
@@ -106,6 +106,7 @@ function compareBusinessTimeAscend(business1, business2) {
 }
 
 function renderFunctions(business_list) {
+    global_line_chart_max_review_amount = 0;
     var businessList = business_list["hits"]["hits"];
     var i = 0;
     var list_for_line = [];
