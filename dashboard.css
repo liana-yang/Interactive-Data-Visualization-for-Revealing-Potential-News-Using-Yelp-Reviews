@@ -122,6 +122,7 @@ body {
 
 .path-highlighted {
   stroke: orange;
+  stroke-width: 3px;
 }
 
 .path-clicked {

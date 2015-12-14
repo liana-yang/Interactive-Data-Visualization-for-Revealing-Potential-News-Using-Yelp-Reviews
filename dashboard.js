@@ -11,47 +11,47 @@ function renderBusinessList(businessList) {
   var tdSelection = trSelection
     .append('td')
     .text(function (d) {
-//        return d._source.business_id;
       return d._source.name;
     });
-  var tbodySelection = d3.select('#business-list').select('tbody');
   tbodySelection
     .select('td:nth-child(1)')
     .classed('text-highlighted', true);
   tdSelection
     .on('mouseover', function (businessName, i) {
       businessListHighlight(i);
+      reviewLineChartHighlight(i);
     })
     .on('click', function(business, i) {
       businessListClick(i);
+      reviewLineChartClick(i);
       get_review_details_within_time_range("yelp", "review1208v3", business._source.business_id, 100, "desc", "2012-11-01", "2014-12-01");
     });
-  $('#business-list tbody tr:first-child td').trigger('click');
 }
 
-function renderBusinessListReRank(businessList) {//different input format compared with renderBusinessList
-  var trSelection = d3.select('#business-list').select('tbody').selectAll('tr').data(businessList);
-  tbodySelection.selectAll('*').remove();
-  trSelection.enter().append('tr');
-  trSelection.exit().remove();
-  var tdSelection = trSelection
-      .append('td')
-      .text(function (d) {
-//        return d._source.business_id;
-        return d.name;
-      });
-  var tbodySelection = d3.select('#business-list').select('tbody');
-  tbodySelection
-      .select('td:nth-child(1)')
-      .classed('text-highlighted', true);
-  tdSelection
-      .on('mouseover', function (businessName, i) {
-        businessListHighlight(i);
-      })
-      .on('click', function(businessName, i) {
-        businessListClick(i);
-      });
-}
+//function renderBusinessListReRank(businessList) {//different input format compared with renderBusinessList
+//  var trSelection = d3.select('#business-list').select('tbody').selectAll('tr').data(businessList);
+//  tbodySelection.selectAll('*').remove();
+//  trSelection.enter().append('tr');
+//  trSelection.exit().remove();
+//  var tdSelection = trSelection
+//      .append('td')
+//      .text(function (d) {
+//        return d.name;
+//      });
+//  var tbodySelection = d3.select('#business-list').select('tbody');
+//  tbodySelection
+//      .select('td:nth-child(1)')
+//      .classed('text-highlighted', true);
+//  tdSelection
+//      .on('mouseover', function (businessName, i) {
+//        businessListHighlight(i);
+//        reviewLineChartHighlight(i);
+//      })
+//      .on('click', function(businessName, i) {
+//        businessListClick(i);
+//        reviewLineChartClick(i);
+//      });
+//}
 
 function renderReviewList(reviewList) {
   var tbodySelection = d3.select('#review-list').select('tbody');
@@ -62,7 +62,6 @@ function renderReviewList(reviewList) {
   var timeSelection = trSelection
     .append('td')
     .text(function (d) {
-//        return d._source.business_id;
       return d._source.date;
     });
   var reviewSelection = trSelection
@@ -113,13 +112,12 @@ function drawReviewAmountLineChart(lineChartData) {
     .classed('y', true)
     .attr('transform', 'translate(50, 0)');
   var reviewContent = svgSelection.append('g')
+    .classed('review-content', true)
     .attr('width', lineChartWeight)
     .attr('height', lineChartHeight);
-  console.log(lineChartData);
   var reviewPath = reviewContent.selectAll('path').data(lineChartData);
   var line = d3.svg.line()
     .x(function(data) {
-      //console.log(data);
       return xScale(new Date(data.date));
     })
     .y(function(data) {
@@ -127,16 +125,21 @@ function drawReviewAmountLineChart(lineChartData) {
     })
     .interpolate('linear');
   reviewPath.enter().append('path')
-    .on('mousemove', function() {
-      reviewContent.selectAll('path').classed('path-highlighted', false);
-      d3.select(d3.event.target).classed('path-highlighted', true);
+    .on('mousemove', function(data, i) {
+      businessListHighlight(i);
+      reviewLineChartHighlight(i);
+    })
+    .on('click', function(data, i) {
+      businessListClick(i);
+      reviewLineChartClick(i);
     });
   reviewPath.classed('profile', true)
     .attr('d', line)
     .attr('fill', 'none')
-    .attr('stroke', 'gray');
+    .attr('stroke', 'gray')
+    .attr('stroke-width', 1.5);
   reviewPath.exit().remove();
-
+  $('#business-list tbody tr:first-child td').trigger('click');
 }
 
 function businessListHighlight(index) {
@@ -150,6 +153,19 @@ function businessListClick(index) {
   tbodySelection.selectAll('td').classed('text-clicked', false);
   tbodySelection.select('tr:nth-child(' + (index + 1 ) + ') td').classed('text-clicked', true);
 }
+
+function reviewLineChartHighlight(index) {
+  var reviewContent = d3.select('.review-content');
+  reviewContent.selectAll('path').classed('path-highlighted', false);
+  reviewContent.select('path:nth-child(' + (index + 1 ) + ')').classed('path-highlighted', true);
+}
+
+function reviewLineChartClick(index) {
+  var reviewContent = d3.select('.review-content');
+  reviewContent.selectAll('path').classed('path-clicked', false);
+  reviewContent.select('path:nth-child(' + (index + 1 ) + ')').classed('path-clicked', true);
+}
+
 
 //Unused code.
 //$(document).ready(function () {
