@@ -6,7 +6,7 @@ function get_review_details_within_time_range(index, type, business_ids, review_
         "index": index,
         "type": type,
         "size": review_num,
-        "sort": ["date: " + data_order],
+        "sort": ["date:" + data_order],
         "body": {
             "query": {
                 "filtered": {
@@ -23,7 +23,7 @@ function get_review_details_within_time_range(index, type, business_ids, review_
             }
         }
     }, function (error, review_list) {
-        console.log(review_list["hits"]["hits"]);
+        console.log(review_list);
         renderReviewList(review_list["hits"]["hits"])
     });
 }
