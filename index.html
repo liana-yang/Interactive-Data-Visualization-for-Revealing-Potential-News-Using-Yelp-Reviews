@@ -16,6 +16,8 @@
         integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
         integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css">
 
   <!-- Custom styles for this template -->
   <link href="dashboard.css" rel="stylesheet">
@@ -55,6 +57,7 @@
       </div>
       <div id="filters">
         <ul class="nav navbar-nav">
+          <!--<input id="business-time" type="text" name="datefilter" value="">-->
           <li class="dropdown">
             <a id="category-filter" class="dropdown-toggle" data-toggle="dropdown" href="#">Category
               <span class="caret"></span></a>
@@ -129,9 +132,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="https://code.jquery.com/jquery-1.11.3.js" charset="utf-8"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script><!--import D3-->
-<script src="js/jquery-2.1.4.js" charset="utf-8"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 <script src="js/elasticsearch.jquery.js" charset="utf-8"></script>
 <script src="js/util_get_business_list_based_on_abnormality_score.js" charset="utf-8"></script>
 <script src="js/util_get_review_details_within_time_range.js" charset="utf-8"></script>
@@ -190,6 +192,22 @@
   $(window).resize(function () {
     renderLineCharts();
   });
+
+  $('input[name="datefilter"]').daterangepicker({
+    autoUpdateInput: false,
+    locale: {
+      cancelLabel: 'Clear'
+    }
+  });
+
+  $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+  });
+
+  $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+    $(this).val('');
+  });
+
 </script>
 </body>
 </html>

@@ -66,6 +66,10 @@ body {
   float: right;
 }
 
+#business-time {
+  /*vertical-align: middle;*/
+}
+
 #business-list .table-responsive {
   height: 430px;
   overflow-x: auto;
