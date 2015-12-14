@@ -27,7 +27,7 @@ function renderBusinessList(businessList) {
       reviewLineChartClick(i);
       starLineChartClick(i);
       window.clickedBusinessID = business._source.business_id;
-      get_review_details_within_time_range("yelp", "review1208v3", business._source.business_id, 100, "desc", "2005-01-01", "2014-12-31");
+      get_review_details_within_time_range("yelp", "review1208v3", business._source.business_id, 100, "asc", "2005-01-01", "2014-12-31");
     });
 }
 
@@ -247,7 +247,7 @@ function drawReviewAmountLineChart(lineChartData) {
       console.log(startDate, endDate);
       console.log(window.clickedBusinessID);
       if (startDate != endDate) {
-        get_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, "desc", startDate, endDate);
+        get_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, "asc", startDate, endDate);
         get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 10, startDate, endDate);
       }
     })
@@ -422,7 +422,7 @@ function drawStarAmountLineChart(lineChartData) {
       var endDate = timeFormate(rightDate);
       console.log(startDate, endDate);
       if (startDate != endDate) {
-        get_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, "desc", startDate, endDate);
+        get_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, "asc", startDate, endDate);
         get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 10, startDate, endDate);
       }
     })

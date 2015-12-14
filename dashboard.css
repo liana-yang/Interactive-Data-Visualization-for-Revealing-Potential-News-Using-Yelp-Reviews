@@ -71,8 +71,9 @@ body {
 }
 
 #business-list .table-responsive {
-  height: 430px;
+  height: 390px;
   overflow-x: auto;
+  margin-top: 30px;
 }
 
 .text-highlighted {
@@ -169,6 +170,10 @@ svg *::-webkit-selection {
 
 #business-list {
   text-align: center;
+}
+
+#business-list tbody {
+  text-align: left;
 }
 
 /*#review-list h5,*/
