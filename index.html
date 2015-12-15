@@ -149,15 +149,12 @@
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-<script src="js/elasticsearch.jquery.js" charset="utf-8"></script>
-<script src="js/util_get_business_list_based_on_abnormality_score.js" charset="utf-8"></script>
-<script src="js/util_get_review_details_within_time_range.js" charset="utf-8"></script>
-<script src="js/util_get_significant_terms_within_time_range.js" charset="utf-8"></script>
-<script src="js/util_re_rank.js" charset="utf-8"></script>
-<script src="js/util_search_box.js" charset="utf-8"></script>
-<script src="js/util_get_business_list_based_on_ids.js" charset="utf-8"></script>
-<script src="js/util_get_business_list_by_next_or_prev_button.js" charset="utf-8"></script>
-<script src="js/util_get_category_filter.js" charset=utf-8></script>
+<script src="util/elasticsearch.jquery.js" charset="utf-8"></script>
+<script src="util/util_get_business_list_based_on_abnormality_score.js" charset="utf-8"></script>
+<script src="util/util_get_review_details_within_time_range.js" charset="utf-8"></script>
+<script src="util/util_get_significant_terms_within_time_range.js" charset="utf-8"></script>
+<script src="util/util_get_business_list_by_next_or_prev_button.js" charset="utf-8"></script>
+<script src="util/util_get_category_filter.js" charset=utf-8></script>
 <script src="dashboard.js" charset="utf-8"></script>
 <script>
   var client = new $.es.Client({
@@ -169,7 +166,6 @@
                   "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
                   "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC", "None"];
   var global_category_filter = [];
-  var global_business_list = [];
   var global_next_prev_click_times = 0;
   var global_line_chart_start_time = "2010-01-01";
   var global_line_chart_end_time = "2014-12-31";
@@ -177,21 +173,11 @@
   var clickedBusinessID = '';
   var selectedCategoryFilter = '';
   var selectedLocationFilter = '';
-  //  client.ping({
-  //    requestTimeout: 30000 // undocumented params are appended to the query string
-  //  }, function (error) {
-  //    if (error) {
-  //      console.error('elasticsearch cluster is down!');
-  //    } else {
-  //      console.log('All is well');
   get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 0, "", "");
   //get_business_list_by_next_button("yelp", "business1208v3", 10, "wi", "bars");
   //get_business_list_by_prev_button("yelp", "business1208v3", 10, "wi", "bars");
   //get_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg", 100, "desc", "2012-11-01", "2014-12-01");
   //get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "2012-11-01", "2014-12-01");
-  //re_rank_in_date_range("yelp", "business1208v3", "2014-06-01", "2014-12-01");
-  //search_box("yelp", 10, "starbucks, money");
-  //get_business_list_based_on_ids("yelp", "business1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A");
   //get_category_filter("yelp", "business1208v3", 10, "2004-11-01", "2015-12-01");
 
 

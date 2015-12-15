@@ -25,7 +25,7 @@ def get_business_map(source_file_business):
         business_map[key_business] = {"business_id": data["business_id"], "name": data["name"],
                                               "full_address": new_address, "categories": data["categories"],
                                               "review_total": data["review_count"], "stars_avg": data["stars"],
-                                              "stars_reviews": stars_review}
+                                              "stars_reviews": stars_review, "state": data["state"]}
         count += 1
     return business_map
 
@@ -69,6 +69,9 @@ def add_stars_reviews_diff_in_business_review_map(business_review_map):
     for temp in business_review_map:
         m = {}
         max_diff_stars = max_diff_review_amount = diff_stars = 0
+        max_diff_stars_20150101 = max_diff_review_amount_20150101 = 0
+        max_diff_stars_20130101 = max_diff_review_amount_20130101 = 0
+        max_diff_stars_20110101 = max_diff_review_amount_20110101 = 0
         for date in business_review_map.get(temp)["stars_reviews"]:
             m[business_review_map.get(temp)["stars_reviews"][date]["date_in_seconds"]] = date
         for date in business_review_map.get(temp)["stars_reviews"]:
@@ -82,6 +85,21 @@ def add_stars_reviews_diff_in_business_review_map(business_review_map):
                     max_diff_stars = diff_stars
                 if abs(max_diff_review_amount) < abs(diff_review_amount):
                     max_diff_review_amount = diff_review_amount
+
+                if date >= "2015-01-01" and abs(max_diff_stars_20150101) < abs(diff_stars):
+                    max_diff_stars_20150101 = diff_stars
+                if date >= "2015-01-01" and abs(max_diff_review_amount_20150101) < abs(diff_review_amount):
+                    max_diff_review_amount_20150101 = diff_review_amount
+
+                if date >= "2013-01-01" and abs(max_diff_stars_20130101) < abs(diff_stars):
+                    max_diff_stars_20130101 = diff_stars
+                if date >= "2013-01-01" and abs(max_diff_review_amount_20130101) < abs(diff_review_amount):
+                    max_diff_review_amount_20130101 = diff_review_amount
+
+                if date >= "2011-01-01" and abs(max_diff_stars_20110101) < abs(diff_stars):
+                    max_diff_stars_20110101 = diff_stars
+                if date >= "2011-01-01" and abs(max_diff_review_amount_20110101) < abs(diff_review_amount):
+                    max_diff_review_amount_20110101 = diff_review_amount
             else:
                 diff_review_amount = stars_reviews_item[date]["review_amount"]
                 if abs(max_diff_review_amount) < abs(diff_review_amount):
@@ -98,6 +116,12 @@ def add_stars_reviews_diff_in_business_review_map(business_review_map):
                     stars_reviews_item[date]["diff_review_amount"] = diff_review_amount
         business_review_map.get(temp)["max_diff_stars"] = max_diff_stars
         business_review_map.get(temp)["max_diff_review_amount"] = max_diff_review_amount
+        business_review_map.get(temp)["max_diff_stars_20150101"] = max_diff_stars_20150101
+        business_review_map.get(temp)["max_diff_review_amount_20150101"] = max_diff_review_amount_20150101
+        business_review_map.get(temp)["max_diff_stars_20130101"] = max_diff_stars_20130101
+        business_review_map.get(temp)["max_diff_review_amount_20130101"] = max_diff_review_amount_20130101
+        business_review_map.get(temp)["max_diff_stars_20110101"] = max_diff_stars_20110101
+        business_review_map.get(temp)["max_diff_review_amount_20110101"] = max_diff_review_amount_20110101
         business_review_map[temp]["abnormality_score"] = abs(max_diff_review_amount) * (1 + abs(max_diff_stars) / 4)
         # normalize diff stars and diff reviews
     return business_review_map
@@ -114,5 +138,5 @@ def construct_business_review_file(source_file_business, source_file_review, tar
     name_list2 = files_name_gen("yelp_trend", 1)
     yelp_map = cal_yelp_trend(business_review_map_with_avg_stars)
     serialize_for_es(name_list2, yelp_map, "yelp", "yelp_trend", 100000)
-construct_business_review_file("yelp_academic_dataset_business.json", "yelp_academic_dataset_review.json", "business", 30, "yelp", "business1208v3")
-# construct_business_review_file("yelp_sample_business1M.json", "yelp_sample_review1M.json", "business", 1, "yelp", "business1208v3")
+# construct_business_review_file("yelp_academic_dataset_business.json", "yelp_academic_dataset_review.json", "business", 30, "yelp", "business1208v3")
+construct_business_review_file("yelp_sample_business1M.json", "yelp_sample_review1M.json", "business", 1, "yelp", "business1214v1")
