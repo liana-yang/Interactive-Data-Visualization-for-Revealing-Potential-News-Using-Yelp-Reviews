@@ -41,24 +41,18 @@ def get_business_map(source_file_business):
     for temp in category_dict:
         cat = CategoryPair(temp, category_dict[temp])
         category_list.append(cat)
-    sorted(category_list, key=get_value_for_sort)
+    category_list_sorted = sorted(category_list, key=lambda cat: -cat.frequency)
     fw = open("category.txt", 'w', encoding='utf-8')
     fw.write(str("["))
     category_list_idx = 0
-    while category_list_idx < len(category_list) - 1:
-        fw.write(str(category_list[category_list_idx].name))
+    while category_list_idx < len(category_list_sorted) - 1:
+        fw.write(str(category_list_sorted[category_list_idx].name))
         fw.write(str(","))
         category_list_idx += 1
-    fw.write(str(category_list[category_list_idx].name))
+    fw.write(str(category_list_sorted[category_list_idx].name))
     fw.write(str("]"))
     fw.close()
     return business_map
-
-
-def get_value_for_sort(category_pair):
-    print(category_pair.frequency)
-    print(category_pair.name)
-    return category_pair.frequency
 
 
 class CategoryPair(object):
