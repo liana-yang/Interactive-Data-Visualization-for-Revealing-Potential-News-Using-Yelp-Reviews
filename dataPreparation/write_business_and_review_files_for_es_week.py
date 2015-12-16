@@ -43,14 +43,12 @@ def get_business_map(source_file_business):
         category_list.append(cat)
     category_list_sorted = sorted(category_list, key=lambda cat: -cat.frequency)
     fw = open("category.txt", 'w', encoding='utf-8')
-    fw.write(str("["))
     category_list_idx = 0
     while category_list_idx < len(category_list_sorted) - 1:
         fw.write(str(category_list_sorted[category_list_idx].name))
         fw.write(str(","))
         category_list_idx += 1
     fw.write(str(category_list_sorted[category_list_idx].name))
-    fw.write(str("]"))
     fw.close()
     return business_map
 
@@ -145,15 +143,19 @@ def add_stars_reviews_diff_in_business_review_map(business_review_map):
                     max_diff_review_amount = diff_review_amount
                 if abs(stars_reviews_item[date]["diff_review_amount"]) < abs(diff_review_amount):
                     stars_reviews_item[date]["diff_review_amount"] = diff_review_amount
-        business_review_map.get(temp)["max_diff_stars"] = max_diff_stars
-        business_review_map.get(temp)["max_diff_review_amount"] = max_diff_review_amount
-        business_review_map.get(temp)["max_diff_stars_20150101"] = max_diff_stars_20150101
-        business_review_map.get(temp)["max_diff_review_amount_20150101"] = max_diff_review_amount_20150101
-        business_review_map.get(temp)["max_diff_stars_20130101"] = max_diff_stars_20130101
-        business_review_map.get(temp)["max_diff_review_amount_20130101"] = max_diff_review_amount_20130101
-        business_review_map.get(temp)["max_diff_stars_20110101"] = max_diff_stars_20110101
-        business_review_map.get(temp)["max_diff_review_amount_20110101"] = max_diff_review_amount_20110101
-        business_review_map[temp]["abnormality_score"] = abs(max_diff_review_amount) * (1 + abs(max_diff_stars) / 4)
+        business_review_map.get(temp)["max_diff_stars"] = round(max_diff_stars, 2)
+        business_review_map.get(temp)["max_diff_review_amount"] = round(max_diff_review_amount, 2)
+        business_review_map.get(temp)["max_diff_stars_20150101"] = round(max_diff_stars_20150101, 2)
+        business_review_map.get(temp)["max_diff_review_amount_20150101"] = round(max_diff_review_amount_20150101, 2)
+        business_review_map.get(temp)["max_diff_stars_20130101"] = round(max_diff_stars_20130101, 2)
+        business_review_map.get(temp)["max_diff_review_amount_20130101"] = round(max_diff_review_amount_20130101, 2)
+        business_review_map.get(temp)["max_diff_stars_20110101"] = round(max_diff_stars_20110101, 2)
+        business_review_map.get(temp)["max_diff_review_amount_20110101"] = round(max_diff_review_amount_20110101, 2)
+        business_review_map[temp]["abnormality_score"] = round(abs(max_diff_review_amount) * (1 + abs(max_diff_stars) / 4), 2)
+        business_review_map[temp]["abnormality_score_20150101"] = round(abs(max_diff_review_amount_20150101) * (1 + abs(max_diff_stars_20150101) / 4), 2)
+        business_review_map[temp]["abnormality_score_20130101"] = round(abs(max_diff_review_amount_20130101) * (1 + abs(max_diff_stars_20130101) / 4), 2)
+        business_review_map[temp]["abnormality_score_20110101"] = round(abs(max_diff_review_amount_20110101) * (1 + abs(max_diff_stars_20110101) / 4), 2)
+
         # normalize diff stars and diff reviews
     return business_review_map
 
@@ -169,5 +171,5 @@ def construct_business_review_file(source_file_business, source_file_review, tar
     name_list2 = files_name_gen("yelp_trend", 1)
     yelp_map = cal_yelp_trend(business_review_map_with_avg_stars)
     serialize_for_es(name_list2, yelp_map, "yelp", "yelp_trend", 100000)
-# construct_business_review_file("yelp_academic_dataset_business.json", "yelp_academic_dataset_review.json", "business", 30, "yelp", "business1208v3")
-construct_business_review_file("yelp_sample_business1M.json", "yelp_sample_review1M.json", "business", 1, "yelp", "business1214v1")
+construct_business_review_file("yelp_academic_dataset_business.json", "yelp_academic_dataset_review.json", "business", 30, "yelp", "business1216")
+# construct_business_review_file("yelp_sample_business1M.json", "yelp_sample_review1M.json", "business", 1, "yelp", "business1216")
