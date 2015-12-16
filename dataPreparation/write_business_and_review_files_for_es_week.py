@@ -17,6 +17,8 @@ def get_business_map(source_file_business):
     fr_business.close()
     business_map = {}
     count = 0
+    category_dict = {}
+    category_list = []
     while count < len(business):
         data = json.loads(business[count])
         key_business = data["business_id"]
@@ -27,7 +29,42 @@ def get_business_map(source_file_business):
                                               "review_total": data["review_count"], "stars_avg": data["stars"],
                                               "stars_reviews": stars_review, "state": data["state"]}
         count += 1
+        categories = data["categories"]
+        category_idx = 0
+        while category_idx < len(categories):
+            cat = categories[category_idx]
+            if cat in category_dict:
+                category_dict[cat] += 1
+            else:
+                category_dict[cat] = 1
+            category_idx += 1
+    for temp in category_dict:
+        cat = CategoryPair(temp, category_dict[temp])
+        category_list.append(cat)
+    sorted(category_list, key=get_value_for_sort)
+    fw = open("category.txt", 'w', encoding='utf-8')
+    fw.write(str("["))
+    category_list_idx = 0
+    while category_list_idx < len(category_list) - 1:
+        fw.write(str(category_list[category_list_idx].name))
+        fw.write(str(","))
+        category_list_idx += 1
+    fw.write(str(category_list[category_list_idx].name))
+    fw.write(str("]"))
+    fw.close()
     return business_map
+
+
+def get_value_for_sort(category_pair):
+    print(category_pair.frequency)
+    print(category_pair.name)
+    return category_pair.frequency
+
+
+class CategoryPair(object):
+    def __init__(self, name, frequency):
+        self.name = name
+        self.frequency = frequency
 
 
 def get_business_review_map(source_file_review, business_map):
