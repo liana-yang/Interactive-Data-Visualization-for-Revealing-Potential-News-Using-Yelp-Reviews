@@ -160,6 +160,11 @@
   var client = new $.es.Client({
     host: 'http://localhost:9200'
   });
+  d3.text("dataPreparation/category.txt", function(category_strings){
+    var category_array = category_strings.split(",");
+    category_array.unshift("None");
+    console.log(category_array);
+  });
   var global_state_filter = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
                   "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
                   "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
@@ -173,7 +178,9 @@
   var clickedBusinessID = '';
   var selectedCategoryFilter = '';
   var selectedLocationFilter = '';
-  get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 0, "", "");
+  get_businesses_list_based_on_abnormality_score("yelp", "business1216", 10, 0, "", "", "abnormality_score_20110101");
+  //options: abnormality_score, abnormality_score_20110101, abnormality_score_20130101, abnormality_score_20150101
+
   //get_business_list_by_next_button("yelp", "business1208v3", 10, "wi", "bars");
   //get_business_list_by_prev_button("yelp", "business1208v3", 10, "wi", "bars");
   //get_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg", 100, "desc", "2012-11-01", "2014-12-01");
