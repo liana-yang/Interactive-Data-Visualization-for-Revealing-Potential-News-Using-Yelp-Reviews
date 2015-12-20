@@ -1,0 +1,16 @@
+How To Prepare Back-End Data
+1. Download and install elasticsearch 2.0.0 accroding to the website as below:
+https://www.elastic.co/downloads/past-releases/elasticsearch-2-0-0
+2. Modify /config/elasticsearch.yml file as the one we shared in the folder "configrationInfo".
+3. Download yelp review files from the website as below:
+https://www.yelp.com/dataset_challenge/dataset
+    The program needs:
+    	yelp_academic_dataset_business.json
+    	yelp_academic_dataset_review.json
+4. Install Python 3.4.3
+5. Put the two yelp json files in Python project folder "dataPreparation", and run "write_business_and_review_files_for_es_week.py" and "write_review_files_for_es.py". We will get three batch of files:
+    1) business0.json ~ business6.json
+    2) category.txt
+    3) review0.json ~ review15.json
+    All of them fit elasticsearch format requirement. (The files are splited into several pieces due to laptop computing amd memory resource limitation.)
+6. Use "load_files_and_bulk_create" function in  "bulk_create.html" to load all generated files and bulk create documents in ElasticSearch. "business_files_amount" and "review_files_amount" may need modification according to the actual number of files generated, if yelp provide more data. Because uploading all of them in one batch requests much computing and memory resource, you may have to load the files one by one.
