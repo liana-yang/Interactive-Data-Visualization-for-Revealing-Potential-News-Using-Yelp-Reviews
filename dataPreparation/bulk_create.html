@@ -13,16 +13,16 @@
     var review_files_amount = 0;
 
     var business_files_id = 0;
-    while (business_files_id <1 ) {
+    while (business_files_id < business_files_amount) {
         load_files_and_bulk_create("business" + business_files_id + ".json");
         business_files_id++;
     }
     var review_files_id = 0;
-    while (review_files_id < 1) {
+    while (review_files_id < review_files_amount) {
         load_files_and_bulk_create("review" + review_files_id + ".json");
         review_files_id++;
     }
-    load_files_and_bulk_create("yelp_trend0.json");
+    //load_files_and_bulk_create("yelp_trend0.json");
 
 
     function load_files_and_bulk_create(source_file_name) {
