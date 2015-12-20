@@ -1,14 +1,14 @@
 /**
  * Created by Jiaqiang on 12/6/2015.
  */
-function get_businesses_list_based_on_abnormality_score(index, type, size, offset_number, location, category) {
+function get_businesses_list_based_on_abnormality_score(index, type, size, offset_number, location, category, sort_key) {
     if (location == "" && category == "") {
         client.search({
             "index": index,
             "type": type,
             "size": size,
             "from": offset_number,
-            "sort": ["abnormality_score:desc"]
+            "sort": [sort_key + ":desc"]
         }, function (error, business_list) {
             renderFunctions(business_list);
         });
