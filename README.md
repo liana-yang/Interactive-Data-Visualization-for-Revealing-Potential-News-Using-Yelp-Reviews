@@ -12,7 +12,8 @@ This visulization project can help journalist to get two information:
     The tool recommends business list based on abnormality posibility, and provide related business review_amount and average stars trend. Both of them can help users to look up potential news.
 2.	What are these potential news?
     The tool provides review details and recommend some enlighting words in reviews that maybe helpful for understanding the background of the abnormality found in step one.
-# Related Links
+
+# Related Links:
 Link to the Video:
 
 Link to the Demo:
