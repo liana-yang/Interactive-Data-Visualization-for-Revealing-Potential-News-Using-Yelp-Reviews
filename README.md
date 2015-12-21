@@ -7,8 +7,11 @@ mjq04
 # Application Description:
 Journalists want to explore crowd-sourced reviews from Yelp to identify hot spots. However, large human-generated text data is complex to analyze and it is hard for journalists to look into millions of Yelp reviews. Therefore, developing a visual analytic platform to mine and visualize these data could help investigative journalists explore large sets of crowd-sourced reviews.
 This visulization project can help journalist to get two information:
+
 1.	Where are potential news in Yelp logs? 
+    The tool recommends business list based on abnormality posibility, and provide related business review_amount and average stars trend. Both of them can help users to look up potential news.
 2.	What are these potential news?
+    The tool provides review details and recommend some enlighting words in reviews that maybe helpful for understanding the background of the abnormality found in step one.
 # Related Links
 Link to the Video:
 
