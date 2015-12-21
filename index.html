@@ -154,11 +154,10 @@
 <script src="util/util_get_review_details_within_time_range.js" charset="utf-8"></script>
 <script src="util/util_get_significant_terms_within_time_range.js" charset="utf-8"></script>
 <script src="util/util_get_business_list_by_next_or_prev_button.js" charset="utf-8"></script>
-<script src="util/util_get_category_filter.js" charset=utf-8></script>
 <script src="dashboard.js" charset="utf-8"></script>
 <script>
   var client = new $.es.Client({
-    host: 'http://localhost:9200'
+    host: 'http://vgc.poly.edu/projects/r2sense/'
   });
   d3.text("dataPreparation/category.txt", function(category_strings){
     var category_array = category_strings.split(",");
@@ -178,9 +177,9 @@
   var clickedBusinessID = '';
   var selectedCategoryFilter = '';
   var selectedLocationFilter = '';
-  get_businesses_list_based_on_abnormality_score("yelp", "business1216", 10, 0, "", "", "abnormality_score_20110101");
+  var reviewListRendered = false;
+  get_businesses_list_based_on_abnormality_score("yelp", "business1216", 10, 0, "", "", "abnormality_score_20150101");
   //options: abnormality_score, abnormality_score_20110101, abnormality_score_20130101, abnormality_score_20150101
-
   //get_business_list_by_next_button("yelp", "business1208v3", 10, "wi", "bars");
   //get_business_list_by_prev_button("yelp", "business1208v3", 10, "wi", "bars");
   //get_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg", 100, "desc", "2012-11-01", "2014-12-01");
@@ -206,6 +205,7 @@
   //renderLineCharts(businessList);
   //    }
   //  });
+
   $('#previous-page').on('click', function (d) {
     get_business_list_by_prev_button("yelp", "business1208v3", 10, selectedLocationFilter, selectedCategoryFilter);
   });

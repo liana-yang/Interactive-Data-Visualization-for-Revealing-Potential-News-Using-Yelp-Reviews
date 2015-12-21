@@ -19,7 +19,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
             "type": type,
             "size": size,
             "from": offset_number,
-            "sort": ["abnormality_score:desc"],
+            "sort": [sort_key + ":desc"],
             "body": {
                 "query": {
                     "filtered": {
@@ -37,7 +37,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
             "type": type,
             "size": size,
             "from": offset_number,
-            "sort": ["abnormality_score:desc"],
+            "sort": [sort_key + ":desc"],
             "body": {
                 "query": {
                     "filtered": {
@@ -55,7 +55,7 @@ function get_businesses_list_based_on_abnormality_score(index, type, size, offse
             "type": type,
             "size": size,
             "from": offset_number,
-            "sort": ["abnormality_score:desc"],
+            "sort": [sort_key + ":desc"],
             "body": {
                 "query": {
                     "bool": {
@@ -114,14 +114,13 @@ function renderFunctions(business_list) {
         list_for_line[i] = get_date_and_review_amount(businessList[i]);
         i++;
     }
-    console.log(global_line_chart_max_review_amount);
     renderBusinessList(businessList);
     renderLineCharts(list_for_line);
     $(window).resize(function () {
         renderLineCharts(list_for_line);
     });
 
-    get_category_filter("yelp", "business1208v3", 50);
+    get_category_filter("yelp", "business1216", 50);
     renderLocation_filter();
 }
 
