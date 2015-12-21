@@ -19,7 +19,6 @@ Link to the Final Report:
 Link to the data:
 https://www.yelp.com/dataset_challenge/dataset
 # How to configure the server
-How To Prepare Back-End Data
 1. Download and install elasticsearch 2.0.0 accroding to the website as below:
 
 https://www.elastic.co/downloads/past-releases/elasticsearch-2-0-0
