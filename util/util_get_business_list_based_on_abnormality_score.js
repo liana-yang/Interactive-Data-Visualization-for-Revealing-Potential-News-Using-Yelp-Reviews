@@ -115,9 +115,11 @@ function renderFunctions(business_list) {
         i++;
     }
     renderBusinessList(businessList);
+    console.log(business_list);
     renderLineCharts(list_for_line);
     $(window).resize(function () {
         renderLineCharts(list_for_line);
+        $('#business-list .table-responsive').height($('#review-list').height() - 176);
     });
 }
 

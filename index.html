@@ -188,15 +188,16 @@
                   "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC", "None"];
   var global_category_filter = [];
   var global_next_prev_click_times = 0;
-  var global_line_chart_start_time = "2010-01-01";
-  var global_line_chart_end_time = "2014-12-31";
+  var global_line_chart_start_time = "2015-01-01";
+  var global_line_chart_end_time = "2015-12-31";
   var global_line_chart_max_review_amount = 0;
   var clickedBusinessIndex = 1;
   var clickedBusinessID = '';
   var selectedCategoryFilter = '';
   var selectedLocationFilter = '';
   var reviewListRendered = false;
-  get_businesses_list_based_on_abnormality_score("yelp", "business1216", 10, 0, "", "", "abnormality_score_20150101");
+  var global_sortKey = '20150101';
+  get_businesses_list_based_on_abnormality_score("yelp", "business1216", 10, 0, "", "", "abnormality_score_" + global_sortKey);
   //options: abnormality_score, abnormality_score_20110101, abnormality_score_20130101, abnormality_score_20150101
   //get_business_list_by_next_button("yelp", "business1208v3", 10, "wi", "bars");
   //get_business_list_by_prev_button("yelp", "business1208v3", 10, "wi", "bars");
@@ -221,10 +222,10 @@
   renderLocationFilter();
 
   $('#previous-page').on('click', function (d) {
-    get_business_list_by_prev_button("yelp", "business1216", 10, selectedLocationFilter, selectedCategoryFilter, "abnormality_score_20150101");
+    get_business_list_by_prev_button("yelp", "business1216", 10, selectedLocationFilter, selectedCategoryFilter, "abnormality_score_" + global_sortKey);
   });
   $('#next-page').on('click', function (d) {
-    get_business_list_by_next_button("yelp", "business1216", 10, selectedLocationFilter, selectedCategoryFilter, "abnormality_score_20150101");
+    get_business_list_by_next_button("yelp", "business1216", 10, selectedLocationFilter, selectedCategoryFilter, "abnormality_score_" + global_sortKey);
   });
 
 //  $('input[name="datefilter"]').daterangepicker({
@@ -244,18 +245,33 @@
 //  });
 
   function cb(start, end) {
-    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+    var startDate = moment(new Date(start)).subtract(-1, 'days');
+    var endDate = moment(new Date(end)).subtract(-1, 'days');
+    $('#reportrange span').html(startDate.format('MMMM D, YYYY') +
+        ' - ' +
+        endDate.format('MMMM D, YYYY'));
+    var newStartDate = timeFormate(new Date(startDate));
+    global_sortKey = newStartDate.replace(/\-/g, '');
+    console.log(global_sortKey);
+    get_businesses_list_based_on_abnormality_score("yelp", "business1216", 10, 0, selectedLocationFilter, selectedCategoryFilter, "abnormality_score_" + global_sortKey);
   }
-  cb(moment().subtract(29, 'days'), moment());
+//  cb(moment().subtract(29, 'days'), moment());
+  cb(global_line_chart_start_time, global_line_chart_end_time);
 
   $('#reportrange').daterangepicker({
     ranges: {
-      'Today': [moment(), moment()],
-      'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-      'This Month': [moment().startOf('month'), moment().endOf('month')],
-      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+//      'Today': [moment(), moment()],
+//      'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+//      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+//      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+//      'This Month': [moment().startOf('month'), moment().endOf('month')],
+//      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+      'Last Year': [moment(new Date(global_line_chart_end_time)).subtract(1, 'year').subtract(-1, 'days'),
+        moment(new Date(global_line_chart_end_time))],
+      'Last Three Years': [moment(new Date(global_line_chart_end_time)).subtract(3, 'year').subtract(-1, 'days'),
+        moment(new Date(global_line_chart_end_time))],
+      'Last Five Years': [moment(new Date(global_line_chart_end_time)).subtract(5, 'year').subtract(-1, 'days'),
+        moment(new Date(global_line_chart_end_time))]
     }
   }, cb);
 

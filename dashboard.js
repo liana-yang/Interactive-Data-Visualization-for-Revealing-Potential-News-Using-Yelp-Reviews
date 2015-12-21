@@ -33,6 +33,7 @@ function renderBusinessList(businessList) {
     .on('mouseout', function() {
       clearAllHover();
     });
+  $('#business-list .table-responsive').height($('#review-list').height() - 176);
 }
 
 //function renderBusinessListReRank(businessList) {//different input format compared with renderBusinessList
@@ -99,8 +100,8 @@ function drawReviewAmountLineChart(lineChartData) {
     .classed('line-chart', true)
     .attr('height', lineChartHeight)
     .attr('width', lineChartWeight);
-  var mindate = new Date(2005, 1, 1);
-  var maxdate = new Date(2014, 12, 31);
+  var mindate = new Date(2004, 1, 1);
+  var maxdate = new Date(2015, 12, 31);
   var xScale = d3.time.scale().range([
     30,
     lineChartWeight - 30
@@ -283,8 +284,8 @@ function drawStarAmountLineChart(lineChartData) {
     .attr('height', lineChartHeight)
     .attr('width', lineChartWeight)
     .attr('transform', 'translate(0, ' + lineChartHeight + ')');
-  var mindate = new Date(2005, 1, 1);
-  var maxdate = new Date(2014, 12, 31);
+  var mindate = new Date(2004, 1, 1);
+  var maxdate = new Date(2015, 12, 31);
   var xScale = d3.time.scale().range([
     30,
     lineChartWeight - 30
@@ -604,7 +605,7 @@ function renderCategoryFilter() {
       }
       window.selectedCategoryFilter = category;
       window.clickedBusinessID = '';
-      get_businesses_list_based_on_abnormality_score('yelp', 'business1216', 10, 0, window.selectedLocationFilter, category, 'abnormality_score_20150101');
+      get_businesses_list_based_on_abnormality_score('yelp', 'business1216', 10, 0, window.selectedLocationFilter, category, 'abnormality_score_' + global_sortKey);
       console.log(category);
     });
   });
@@ -625,7 +626,7 @@ function renderLocationFilter() {
     }
     window.selectedLocationFilter = location;
     window.clickedBusinessID = '';
-    get_businesses_list_based_on_abnormality_score('yelp', 'business1216', 10, 0, location, window.selectedCategoryFilter, 'abnormality_score_20150101');
+    get_businesses_list_based_on_abnormality_score('yelp', 'business1216', 10, 0, location, window.selectedCategoryFilter, 'abnormality_score_' + global_sortKey);
     console.log(location);
   });
 }
