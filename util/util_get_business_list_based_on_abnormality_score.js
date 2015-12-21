@@ -115,7 +115,7 @@ function renderFunctions(business_list) {
         i++;
     }
     renderBusinessList(businessList);
-    console.log(business_list);
+    console.log(businessList);
     renderLineCharts(list_for_line);
     $(window).resize(function () {
         renderLineCharts(list_for_line);

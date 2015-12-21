@@ -97,7 +97,7 @@ body {
 }
 
 #review-list .table-responsive {
-  height: 80vh;
+  height: 75vh;
   overflow-y: auto;
 }
 
@@ -152,7 +152,16 @@ svg *::-webkit-selection {
   height: 100px;
 }
 
+#line-charts {
+  padding-right: 10px;
+}
+
+#line-charts h5 {
+  text-align: center;
+}
+
 #business-list {
+  padding-right: 0px;
   text-align: center;
 }
 
@@ -160,9 +169,22 @@ svg *::-webkit-selection {
   text-align: left;
 }
 
+#review-list {
+  padding-left: 0px;
+}
+
 #review-list h5,
 #review-list thead th {
   text-align: center;
+}
+
+#review-address {
+  font-style: italic;
+  font-size: 5px;
+}
+
+#full-address {
+  font-size: 5px;
 }
 
 #business-time input {

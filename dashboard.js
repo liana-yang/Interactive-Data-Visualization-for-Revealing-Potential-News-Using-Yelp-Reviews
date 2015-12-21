@@ -28,6 +28,7 @@ function renderBusinessList(businessList) {
       starLineChartClick(i);
       window.clickedBusinessIndex = i + 1;
       window.clickedBusinessID = business._source.business_id;
+      d3.select('#full-address').text(business._source.full_address);
       get_review_details_within_time_range("yelp", "review1208v3", business._source.business_id, 100, "asc", "2005-01-01", "2014-12-31");
     })
     .on('mouseout', function() {
@@ -90,7 +91,7 @@ function renderLineCharts(lineChartData) {
 
 function drawReviewAmountLineChart(lineChartData) {
   var reviewContainer = $('#review-amount-line-chart');
-  var lineChartHeight = $('#review-list').height() / 2;
+  var lineChartHeight = ($('#review-list').height() - 60) / 2;
   var lineChartWeight = reviewContainer.width();
   reviewContainer.height(lineChartHeight);
   var reviewSelection = d3.select('#review-amount-line-chart');
@@ -108,7 +109,7 @@ function drawReviewAmountLineChart(lineChartData) {
   ]).domain([mindate, maxdate]);
   var yScale = d3.scale.linear().range([
     lineChartHeight - 30,
-    30
+    10
   ]).domain([0, global_line_chart_max_review_amount]);
   var xAxis = d3.svg.axis()
     .scale(xScale).orient('bottom');
@@ -276,7 +277,7 @@ function drawReviewAmountLineChart(lineChartData) {
 
 function drawStarAmountLineChart(lineChartData) {
   var starContainer = $('#star-amount-line-chart');
-  var lineChartHeight = $('#review-list').height() / 2;
+  var lineChartHeight = ($('#review-list').height() - 60)/ 2;
   var lineChartWeight = starContainer.width();
   starContainer.height(lineChartHeight);
   var starSelection = d3.select('#star-amount-line-chart');
@@ -295,7 +296,7 @@ function drawStarAmountLineChart(lineChartData) {
   ]).domain([mindate, maxdate]);
   var yScale = d3.scale.linear().range([
     lineChartHeight - 30,
-    30
+    10
   ]).domain([0, 5]);
   var xAxis = d3.svg.axis()
     .scale(xScale).orient('bottom');
