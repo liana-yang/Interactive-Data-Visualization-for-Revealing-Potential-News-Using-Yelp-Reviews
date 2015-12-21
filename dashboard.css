@@ -62,18 +62,11 @@ body {
   margin-top: 0;
 }
 
-#filters {
-  float: right;
-}
-
-#business-time {
-  /*vertical-align: middle;*/
-}
-
 #business-list .table-responsive {
-  height: 390px;
+  clear: right;
+  height: 50vh;
   overflow-x: auto;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .text-highlighted {
@@ -84,10 +77,6 @@ body {
 .text-clicked {
   color: dodgerblue;
   font-weight: bold;
-}
-
-#page-buttons {
-  margin-top: -20px;
 }
 
 #page-buttons li a {
@@ -113,7 +102,7 @@ body {
   overflow-y: auto;
 }
 
-#review-list .table-responsive table{
+#review-list .table-responsive table {
   word-wrap:break-word;
   table-layout: fixed;
 }
@@ -164,11 +153,6 @@ svg *::-webkit-selection {
   height: 100px;
 }
 
-.dropdown-filter {
-  height: 400px;
-  overflow-y: scroll;
-}
-
 #business-list {
   text-align: center;
 }
@@ -185,3 +169,34 @@ svg *::-webkit-selection {
 #business-time input {
   width: 185px;
 }
+
+.filter-name {
+  float: left;
+  width: 40%;
+  margin-top: 5px;
+}
+
+.filter:nth-child(2) {
+  margin-top: 10px;
+}
+
+#filters .select2-container {
+  margin-top: 2px;
+  font-size: 5px;
+}
+
+.select2-dropdown.select2-dropdown--below {
+  font-size: 5px !important;
+}
+
+#reportrange {
+  border-radius: 4px;
+}
+
+/*.select2-container--default .select2-selection--single{*/
+  /*padding:6px;*/
+  /*height: 37px;*/
+  /*width: 148px;*/
+  /*font-size: 0.6em;*/
+  /*position: relative;*/
+/*}*/

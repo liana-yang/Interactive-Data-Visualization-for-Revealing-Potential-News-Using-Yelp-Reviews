@@ -29,6 +29,9 @@ function renderBusinessList(businessList) {
       window.clickedBusinessIndex = i + 1;
       window.clickedBusinessID = business._source.business_id;
       get_review_details_within_time_range("yelp", "review1208v3", business._source.business_id, 100, "asc", "2005-01-01", "2014-12-31");
+    })
+    .on('mouseout', function() {
+      clearAllHover();
     });
 }
 
@@ -146,6 +149,9 @@ function drawReviewAmountLineChart(lineChartData) {
     .on('click', function (data, i) {
       var selection = $('#business-list tbody tr:nth-child(' + (i + 1) + ') td')
       selection.trigger('click');
+    })
+    .on('mouseout', function() {
+      clearAllHover();
     });
   reviewPath.classed('profile', true)
     .attr('d', line)
@@ -322,6 +328,9 @@ function drawStarAmountLineChart(lineChartData) {
     })
     .on('click', function (data, i) {
       $('#business-list tbody tr:nth-child(' + (i + 1) + ') td').trigger('click');
+    })
+    .on('mouseout', function() {
+      clearAllHover();
     });
   starPath.classed('profile', true)
     .attr('d', line)
@@ -334,9 +343,9 @@ function drawStarAmountLineChart(lineChartData) {
     $('#business-list tbody tr:first-child td').trigger('click');
   }
   else {
-    businessListClick(window.clickedBusinessIndex);
-    reviewLineChartClick(window.clickedBusinessIndex);
-    starLineChartClick(window.clickedBusinessIndex);
+    businessListClick(window.clickedBusinessIndex - 1);
+    reviewLineChartClick(window.clickedBusinessIndex - 1);
+    starLineChartClick(window.clickedBusinessIndex - 1);
   }
 
   // Drag Selection.
@@ -441,8 +450,8 @@ function drawStarAmountLineChart(lineChartData) {
     })
     .on('mouseout', function () {
       if (d3.event.relatedTarget.tagName == 'HTML') {
-        reviewContent.selectAll('rect.selection').remove();
-        reviewContent.selectAll('.selection').classed('selection', false);
+        starContent.selectAll('rect.selection').remove();
+        starContent.selectAll('.selection').classed('selection', false);
       }
     });
 }
@@ -514,6 +523,15 @@ function starLineChartClick(index) {
   starContent.select('path:nth-child(' + (index + 1 ) + ')').classed('path-clicked', true);
 }
 
+function clearAllHover() {
+  var tbodySelection = d3.select('#business-list').select('tbody');
+  tbodySelection.selectAll('td').classed('text-highlighted', false);
+  var reviewContent = d3.select('.review-content');
+  reviewContent.selectAll('path').classed('path-highlighted', false);
+  var starContent = d3.select('.star-content');
+  starContent.selectAll('path').classed('path-highlighted', false);
+}
+
 function highlightWordInReview(wordList) {
   wordList.forEach(function(word, i) {
     var tdSelection = $('#review-list tbody tr td:nth-child(2)');
@@ -569,46 +587,47 @@ function timeFormate(date) {
   return formatDate;
 }
 
-function renderCategoryFilter(categoryList) {
-  var dropdown = d3.select('#category-filter');
-  dropdown.selectAll('*').remove();
-  var filterSelection = dropdown.selectAll('a').data(categoryList);
-  var listSelection = filterSelection.enter().append('li')
-    .classed('category-filter', true);
-  listSelection.append('a').text(function(text) {
-    return text.charAt(0).toUpperCase() + text.slice(1);
-  })
-    .on('click', function(category) {
+function renderCategoryFilter() {
+  d3.text('dataPreparation/category.txt', function(category_strings){
+    var category_array = category_strings.split(",");
+    category_array.unshift('All');
+    var eventSelect = $('#category-filter');
+    eventSelect.select2({
+      data: category_array,
+      width: '60%'
+    });
+    eventSelect.on('select2:select', function(event) {
       global_next_prev_click_times = 0;
-      d3.select('.category-info').text(category.charAt(0).toUpperCase() + category.slice(1));
-      if (category == 'None') {
+      var category = event.params.data.id.toLowerCase();
+      if (category == 'all') {
         category = '';
       }
       window.selectedCategoryFilter = category;
-      get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 0, window.selectedLocationFilter, category);
+      window.clickedBusinessID = '';
+      get_businesses_list_based_on_abnormality_score('yelp', 'business1216', 10, 0, window.selectedLocationFilter, category, 'abnormality_score_20150101');
+      console.log(category);
     });
-  filterSelection.exit().remove();
+  });
 }
 
-function renderLocation_filter() {
-  var dropdown = d3.select('#location-filter');
-  dropdown.selectAll('*').remove();
-  var filterSelection = dropdown.selectAll('a').data(global_state_filter);
-  var listSelection = filterSelection.enter().append('li')
-    .classed('location-filter', true);
-  listSelection.append('a').text(function(text) {
-      return text;
-    })
-    .on('click', function(location) {
-      global_next_prev_click_times = 0;
-      d3.select('.location-info').text(location);
-      if (location == 'None') {
-        location = '';
-      }
-      window.selectedLocationFilter = location;
-      get_businesses_list_based_on_abnormality_score("yelp", "business1208v3", 10, 0, location, window.selectedCategoryFilter);
-    });
-  filterSelection.exit().remove();
+function renderLocationFilter() {
+  global_state_filter.unshift('All');
+  var eventSelect = $('#location-filter');
+  eventSelect.select2({
+    data: global_state_filter,
+    width: '60%'
+  });
+  eventSelect.on('select2:select', function(event) {
+    global_next_prev_click_times = 0;
+    var location = event.params.data.id;
+    if (location == 'All') {
+      location = '';
+    }
+    window.selectedLocationFilter = location;
+    window.clickedBusinessID = '';
+    get_businesses_list_based_on_abnormality_score('yelp', 'business1216', 10, 0, location, window.selectedCategoryFilter, 'abnormality_score_20150101');
+    console.log(location);
+  });
 }
 
 //Unused code.

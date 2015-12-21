@@ -18,6 +18,7 @@
         integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
 
   <!-- Custom styles for this template -->
   <link href="dashboard.css" rel="stylesheet">
@@ -50,45 +51,58 @@
       <!--<li><a href="#">Profile</a></li>-->
       <!--<li><a href="#">Help</a></li>-->
       <!--</ul>-->
-      <div id="search-box">
-        <form class="navbar-form navbar-right">
-          <input type="text" class="form-control" placeholder="Search...">
-        </form>
-      </div>
+      <!--<div id="search-box">-->
+        <!--<form class="navbar-form navbar-right">-->
+          <!--<input type="text" class="form-control" placeholder="Search...">-->
+        <!--</form>-->
+      <!--</div>-->
       <div id="business-time">
         <form class="navbar-form navbar-right">
-          <input type="text" class="form-control" name="datefilter" placeholder="01/01/2004-12/31/2014">
+          <!--<input type="text" class="form-control" name="datefilter" placeholder="01/01/2004-12/31/2014">-->
+          <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span></span> <b class="caret"></b>
+          </div>
         </form>
       </div>
-      <div id="filters">
-        <ul class="nav navbar-nav">
-          <!--<input id="business-time" type="text" name="datefilter" value="">-->
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Category
-              <span class="caret"></span></a>
-            <ul id="category-filter" class="dropdown-menu dropdown-filter">
-              <!--<li><a href="#">Page 1-1</a></li>-->
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Location
-              <span class="caret"></span></a>
-            <ul id="location-filter" class="dropdown-menu dropdown-filter">
-            </ul>
-          </li>
-        </ul>
-      </div>
+
+      <!--<div id="filters">-->
+        <!--<ul class="nav navbar-nav">-->
+          <!--&lt;!&ndash;<input id="business-time" type="text" name="datefilter" value="">&ndash;&gt;-->
+          <!--<li class="dropdown">-->
+            <!--<a class="dropdown-toggle" data-toggle="dropdown" href="#">Category-->
+              <!--<span class="caret"></span></a>-->
+            <!--<ul id="category-filter" class="dropdown-menu dropdown-filter">-->
+              <!--&lt;!&ndash;<li><a href="#">Page 1-1</a></li>&ndash;&gt;-->
+            <!--</ul>-->
+          <!--</li>-->
+          <!--<li class="dropdown">-->
+            <!--<a class="dropdown-toggle" data-toggle="dropdown" href="#">Location-->
+              <!--<span class="caret"></span></a>-->
+            <!--<ul id="location-filter" class="dropdown-menu dropdown-filter">-->
+            <!--</ul>-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</div>-->
     </div>
   </div>
 </nav>
 
 <div class="container-fluid">
   <div id="business-list" class="col-sm-2 main">
-    <div>
-      <h5 class="sub-header">Business List</h5>
-      <h6>Category: <span class="label label-info category-info">None</span>
-        Location: <span class="label label-info location-info">None</span></h6>
-      <h6></h6>
+    <h5 class="sub-header">Business List</h5>
+    <!--<h6>Category: <span class="label label-info category-info">None</span>-->
+    <!--Location: <span class="label label-info location-info">None</span></h6>-->
+    <!--<h6></h6>-->
+    <div id="filters">
+      <div class="filter">
+        <span class="filter-name">Category: </span>
+        <select id="category-filter" class="js-example-basic-single"></select>
+      </div>
+      <div class="filter">
+        <span class="filter-name">Location:  </span>
+        <select id="location-filter" class="js-example-basic-single"></select>
+      </div>
     </div>
     <div class="table-responsive">
       <table class="table table-striped">
@@ -101,12 +115,18 @@
         </tbody>
       </table>
     </div>
-    <div id="page-buttons">
+    <!--<div id="page-buttons">-->
+      <!--<ul class="pager">-->
+        <!--<li class="previous"><a id="previous-page" href="#">Previous</a></li>-->
+        <!--<li class="next"><a id="next-page" href="#">Next</a></li>-->
+      <!--</ul>-->
+    <!--</div>-->
+    <nav id="page-buttons">
       <ul class="pager">
-        <li class="previous"><a id="previous-page" href="#">Previous</a></li>
-        <li class="next"><a id="next-page" href="#">Next</a></li>
+        <li class="previous"><a id="previous-page" href="#"><span aria-hidden="true">&larr;</span> Upper</a></li>
+        <li class="next"><a id="next-page" href="#">Lower <span aria-hidden="true">&rarr;</span></a></li>
       </ul>
-    </div>
+    </nav>
 
   </div>
   <div id="line-charts" class="col-sm-6 main">
@@ -147,24 +167,20 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 <script src="util/elasticsearch.jquery.js" charset="utf-8"></script>
 <script src="util/util_get_business_list_based_on_abnormality_score.js" charset="utf-8"></script>
 <script src="util/util_get_review_details_within_time_range.js" charset="utf-8"></script>
 <script src="util/util_get_significant_terms_within_time_range.js" charset="utf-8"></script>
 <script src="util/util_get_business_list_by_next_or_prev_button.js" charset="utf-8"></script>
-<script src="util/util_get_category_filter.js" charset=utf-8></script>
 <script src="dashboard.js" charset="utf-8"></script>
 <script>
   var client = new $.es.Client({
     host: 'http://vgc.poly.edu/projects/r2sense/'
   });
-  d3.text("dataPreparation/category.txt", function(category_strings){
-    var category_array = category_strings.split(",");
-    category_array.unshift("None");
-    console.log(category_array);
-  });
+
   var global_state_filter = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
                   "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
                   "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
@@ -188,8 +204,6 @@
   //get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", "g10zmpUzmMJOOIjj_JJPvg, Lml0-yTNsMYsP9IrSMxw9A", 100, "2012-11-01", "2014-12-01");
   //get_category_filter("yelp", "business1208v3", 10, "2004-11-01", "2015-12-01");
 
-
-  //Draw business list.
   var businessList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   var reviewList = [
     {'time': '2015-11-12', 'review': 'hello world'},
@@ -202,34 +216,49 @@
     {'time': '2015-11-12', 'review': 'hello world'},
     {'time': '2015-11-12', 'review': 'hello world'}
   ];
-  //renderBusinessList(businessList);
-  //renderReviewList(reviewList);
-  //renderLineCharts(businessList);
-  //    }
-  //  });
+
+  renderCategoryFilter();
+  renderLocationFilter();
 
   $('#previous-page').on('click', function (d) {
-    get_business_list_by_prev_button("yelp", "business1208v3", 10, selectedLocationFilter, selectedCategoryFilter);
+    get_business_list_by_prev_button("yelp", "business1216", 10, selectedLocationFilter, selectedCategoryFilter, "abnormality_score_20150101");
   });
   $('#next-page').on('click', function (d) {
-    get_business_list_by_next_button("yelp", "business1208v3", 10, selectedLocationFilter, selectedCategoryFilter);
+    get_business_list_by_next_button("yelp", "business1216", 10, selectedLocationFilter, selectedCategoryFilter, "abnormality_score_20150101");
   });
 
-  $('input[name="datefilter"]').daterangepicker({
-    autoUpdateInput: false,
-    locale: {
-      cancelLabel: 'Clear'
+//  $('input[name="datefilter"]').daterangepicker({
+//    autoUpdateInput: false,
+//    locale: {
+//      cancelLabel: 'Clear'
+//    }
+//  });
+//  $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+//    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+//    global_line_chart_start_time = picker.startDate.format('YYYY-MM-DD');
+//    global_line_chart_end_time = picker.endDate.format('YYYY-MM-DD');
+//    console.log(global_line_chart_start_time);
+//  });
+//  $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+//    $(this).val('');
+//  });
+
+  function cb(start, end) {
+    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+  }
+  cb(moment().subtract(29, 'days'), moment());
+
+  $('#reportrange').daterangepicker({
+    ranges: {
+      'Today': [moment(), moment()],
+      'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+      'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+      'This Month': [moment().startOf('month'), moment().endOf('month')],
+      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     }
-  });
-  $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-    global_line_chart_start_time = picker.startDate.format('YYYY-MM-DD');
-    global_line_chart_end_time = picker.endDate.format('YYYY-MM-DD');
-    console.log(global_line_chart_start_time);
-  });
-  $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
-    $(this).val('');
-  });
+  }, cb);
+
 
 </script>
 </body>
