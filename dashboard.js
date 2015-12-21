@@ -13,9 +13,9 @@ function renderBusinessList(businessList) {
     .text(function (d) {
       return d._source.name;
     });
-  tbodySelection
-    .select('td:nth-child(1)')
-    .classed('text-highlighted', true);
+  //tbodySelection
+  //  .select('td:nth-child(1)')
+  //  .classed('text-highlighted', true);
   tdSelection
     .on('mouseover', function (businessName, i) {
       businessListHighlight(i);
@@ -26,6 +26,7 @@ function renderBusinessList(businessList) {
       businessListClick(i);
       reviewLineChartClick(i);
       starLineChartClick(i);
+      window.clickedBusinessIndex = i + 1;
       window.clickedBusinessID = business._source.business_id;
       get_review_details_within_time_range("yelp", "review1208v3", business._source.business_id, 100, "asc", "2005-01-01", "2014-12-31");
     });
@@ -85,7 +86,7 @@ function renderLineCharts(lineChartData) {
 
 function drawReviewAmountLineChart(lineChartData) {
   var reviewContainer = $('#review-amount-line-chart');
-  var lineChartHeight = $('#business-list').height() / 2;
+  var lineChartHeight = $('#review-list').height() / 2;
   var lineChartWeight = reviewContainer.width();
   reviewContainer.height(lineChartHeight);
   var reviewSelection = d3.select('#review-amount-line-chart');
@@ -153,7 +154,6 @@ function drawReviewAmountLineChart(lineChartData) {
     .attr('stroke-opacity', 0.4)
     .attr('stroke-width', 1);
   reviewPath.exit().remove();
-  $('#business-list tbody tr:first-child td').trigger('click');
 
   // Drag Selection.
   var timeLeft = 0;
@@ -266,7 +266,7 @@ function drawReviewAmountLineChart(lineChartData) {
 
 function drawStarAmountLineChart(lineChartData) {
   var starContainer = $('#star-amount-line-chart');
-  var lineChartHeight = $('#business-list').height() / 2;
+  var lineChartHeight = $('#review-list').height() / 2;
   var lineChartWeight = starContainer.width();
   starContainer.height(lineChartHeight);
   var starSelection = d3.select('#star-amount-line-chart');
@@ -330,7 +330,14 @@ function drawStarAmountLineChart(lineChartData) {
     .attr('stroke-opacity', 0.4)
     .attr('stroke-width', 1);
   starPath.exit().remove();
-  $('#business-list tbody tr:first-child td').trigger('click');
+  if (!window.clickedBusinessID) {
+    $('#business-list tbody tr:first-child td').trigger('click');
+  }
+  else {
+    businessListClick(window.clickedBusinessIndex);
+    reviewLineChartClick(window.clickedBusinessIndex);
+    starLineChartClick(window.clickedBusinessIndex);
+  }
 
   // Drag Selection.
   var timeLeft = 0;

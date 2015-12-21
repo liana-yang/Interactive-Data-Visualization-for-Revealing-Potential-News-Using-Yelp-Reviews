@@ -83,9 +83,9 @@
 </nav>
 
 <div class="container-fluid">
-  <div id="business-list" class="col-sm-4 main">
+  <div id="business-list" class="col-sm-2 main">
     <div>
-      <h5 class="sub-header">Business List with Abnormal Score Ranking</h5>
+      <h5 class="sub-header">Business List</h5>
       <h6>Category: <span class="label label-info category-info">None</span>
         Location: <span class="label label-info location-info">None</span></h6>
       <h6></h6>
@@ -109,10 +109,10 @@
     </div>
 
   </div>
-  <div id="line-charts">
-    <div id="review-amount-line-chart" class="col-sm-8 main">
+  <div id="line-charts" class="col-sm-6 main">
+    <div id="review-amount-line-chart">
     </div>
-    <div id="star-amount-line-chart" class="col-sm-8 main">
+    <div id="star-amount-line-chart">
     </div>
     <div class="panel panel-info tooltip">
       <div id="business-name" class="panel-heading">Business Name</div>
@@ -124,7 +124,7 @@
       </div>
     </div>
   </div>
-  <div id="review-list" class="col-sm-12 main">
+  <div id="review-list" class="col-sm-4 main">
     <h5 class="sub-header">Reviews of Selected Business</h5>
 
     <div class="table-responsive">
@@ -175,6 +175,7 @@
   var global_line_chart_start_time = "2010-01-01";
   var global_line_chart_end_time = "2014-12-31";
   var global_line_chart_max_review_amount = 0;
+  var clickedBusinessIndex = 1;
   var clickedBusinessID = '';
   var selectedCategoryFilter = '';
   var selectedLocationFilter = '';

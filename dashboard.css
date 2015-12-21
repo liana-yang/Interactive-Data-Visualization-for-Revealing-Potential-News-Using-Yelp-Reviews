@@ -108,13 +108,14 @@ body {
   stroke: none;
 }
 
-#review-list {
-  margin-top: -20px;
+#review-list .table-responsive {
+  height: 80vh;
+  overflow-y: auto;
 }
 
-#review-list .table-responsive {
-  height: 400px;
-  overflow-y: auto;
+#review-list .table-responsive table{
+  word-wrap:break-word;
+  table-layout: fixed;
 }
 
 #review-list .table-responsive tr th:first-child {
@@ -176,7 +177,7 @@ svg *::-webkit-selection {
   text-align: left;
 }
 
-/*#review-list h5,*/
+#review-list h5,
 #review-list thead th {
   text-align: center;
 }
