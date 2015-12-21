@@ -92,7 +92,7 @@ function renderLineCharts(lineChartData) {
 function drawReviewAmountLineChart(lineChartData) {
   var reviewContainer = $('#review-amount-line-chart');
   var lineChartHeight = ($('#review-list').height() - 60) / 2;
-  var lineChartWeight = reviewContainer.width();
+  var lineChartWidth = reviewContainer.width();
   reviewContainer.height(lineChartHeight);
   var reviewSelection = d3.select('#review-amount-line-chart');
   reviewSelection.selectAll('*').remove();
@@ -100,12 +100,12 @@ function drawReviewAmountLineChart(lineChartData) {
     .append('svg')
     .classed('line-chart', true)
     .attr('height', lineChartHeight)
-    .attr('width', lineChartWeight);
+    .attr('width', lineChartWidth);
   var mindate = new Date(2004, 1, 1);
   var maxdate = new Date(2015, 12, 31);
   var xScale = d3.time.scale().range([
     30,
-    lineChartWeight - 30
+    lineChartWidth - 30
   ]).domain([mindate, maxdate]);
   var yScale = d3.scale.linear().range([
     lineChartHeight - 30,
@@ -127,8 +127,20 @@ function drawReviewAmountLineChart(lineChartData) {
     .attr('transform', 'translate(30, 0)');
   var reviewContent = svgSelection.append('g')
     .classed('review-content', true)
-    .attr('width', lineChartWeight)
+    .attr('width', lineChartWidth)
     .attr('height', lineChartHeight);
+  var rect = reviewContent.append('svg:rect')
+    .attr('width', lineChartWidth - 60)
+    .attr('height', lineChartHeight - 40)
+    .attr('transform', 'translate(30, 10)')
+    .attr('fill', 'white');
+  var clip = reviewContent.append("svg:clipPath")
+    .attr("id", "clip");
+  clip.append("svg:rect")
+    .attr("id", "clip-rect")
+    .attr('width', lineChartWidth - 60)
+    .attr('height', lineChartHeight - 40)
+    .attr('transform', 'translate(30, 10)');
   var reviewPath = reviewContent.selectAll('path').data(lineChartData);
   var line = d3.svg.line()
     .x(function (data) {
@@ -139,6 +151,7 @@ function drawReviewAmountLineChart(lineChartData) {
     })
     .interpolate('linear');
   reviewPath.enter().append('path')
+    .attr("clip-path", "url(#clip)")
     .on('mousemove', function (data, i) {
       var selection = $('#business-list tbody tr:nth-child(' + (i + 1) + ') td')
       businessListHighlight(i);
@@ -165,6 +178,47 @@ function drawReviewAmountLineChart(lineChartData) {
     .attr('stroke-opacity', 0.4)
     .attr('stroke-width', 1);
   reviewPath.exit().remove();
+
+  var zoom = d3.behavior.zoom()
+    .x(xScale)
+    .y(yScale)
+    .on('zoom', function() {
+      svgSelection.select(".x").call(xAxis);
+      svgSelection.select(".y").call(yAxis);
+      reviewPath.attr('d', line);
+      var fullDomain = maxdate - mindate;
+      var currentDomain = xScale.domain()[1] - xScale.domain()[0];
+      var minScale = currentDomain / fullDomain,
+        maxScale = minScale * 20;
+      zoom.scaleExtent([minScale, maxScale]);
+    });
+  //    //xScale.domain([xMin, xMax]);
+  //    //yScale.domain([yMax, yMin]);
+  //    //xAxis.scale(xScale);
+  //    //yAxis.scale(yScale);
+  //    //console.log("here", d3.event.translate, d3.event.scale);
+  //    //if (xScale.domain()[0] < mindate) {
+  //    //  var temp = zoom.translate()[0] - xScale(mindate) + xScale.range()[0];
+  //    //  zoom.translate([temp, 0]);
+  //    //} else if (xScale.domain()[1] > maxdate) {
+  //    //  var temp = zoom.translate()[0] - xScale(maxdate) + xScale.range()[1];
+  //    //  zoom.translate([temp, 0]);
+  //    //}
+  //    svgSelection.select(".x").call(xAxis);
+  //    svgSelection.select(".y").call(yAxis);
+  //    reviewPath.attr('d', line);
+  //    //reviewPath.transition()
+  //    //  .attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+  //    var fullDomain = maxdate - mindate,
+  //      currentDomain = xScale.domain()[1] - xScale.domain()[0];
+  //    var minScale = currentDomain / fullDomain,
+  //      maxScale = minScale * 20;
+  //    zoom.scaleExtent([minScale, maxScale]);
+  svgSelection.call(zoom)
+    .on("mousedown.zoom", null)
+    .on("touchstart.zoom", null)
+    .on("touchmove.zoom", null)
+    .on("touchend.zoom", null);
 
   // Drag Selection.
   var timeLeft = 0;
@@ -278,7 +332,7 @@ function drawReviewAmountLineChart(lineChartData) {
 function drawStarAmountLineChart(lineChartData) {
   var starContainer = $('#star-amount-line-chart');
   var lineChartHeight = ($('#review-list').height() - 60)/ 2;
-  var lineChartWeight = starContainer.width();
+  var lineChartWidth = starContainer.width();
   starContainer.height(lineChartHeight);
   var starSelection = d3.select('#star-amount-line-chart');
   starSelection.selectAll('*').remove();
@@ -286,13 +340,13 @@ function drawStarAmountLineChart(lineChartData) {
     .append('svg')
     .classed('line-chart', true)
     .attr('height', lineChartHeight)
-    .attr('width', lineChartWeight)
+    .attr('width', lineChartWidth)
     .attr('transform', 'translate(0, ' + lineChartHeight + ')');
   var mindate = new Date(2004, 1, 1);
   var maxdate = new Date(2015, 12, 31);
   var xScale = d3.time.scale().range([
     30,
-    lineChartWeight - 30
+    lineChartWidth - 30
   ]).domain([mindate, maxdate]);
   var yScale = d3.scale.linear().range([
     lineChartHeight - 30,
@@ -314,8 +368,20 @@ function drawStarAmountLineChart(lineChartData) {
     .attr('transform', 'translate(30, 0)');
   var starContent = svgSelection.append('g')
     .classed('star-content', true)
-    .attr('width', lineChartWeight)
+    .attr('width', lineChartWidth)
     .attr('height', lineChartHeight);
+  var rect = starContent.append('svg:rect')
+    .attr('width', lineChartWidth - 60)
+    .attr('height', lineChartHeight - 40)
+    .attr('transform', 'translate(30, 10)')
+    .attr('fill', 'white');
+  var clip = starContent.append("svg:clipPath")
+    .attr("id", "clip");
+  clip.append("svg:rect")
+    .attr("id", "clip-rect")
+    .attr('width', lineChartWidth - 60)
+    .attr('height', lineChartHeight - 40)
+    .attr('transform', 'translate(30, 10)');
   var starPath = starContent.selectAll('path').data(lineChartData);
   var line = d3.svg.line()
     .x(function (data) {
@@ -326,6 +392,7 @@ function drawStarAmountLineChart(lineChartData) {
     })
     .interpolate('linear');
   starPath.enter().append('path')
+    .attr("clip-path", "url(#clip)")
     .on('mousemove', function (data, i) {
       var selection = $('#business-list tbody tr:nth-child(' + (i + 1) + ') td')
       businessListHighlight(i);
@@ -359,6 +426,25 @@ function drawStarAmountLineChart(lineChartData) {
     reviewLineChartClick(window.clickedBusinessIndex - 1);
     starLineChartClick(window.clickedBusinessIndex - 1);
   }
+
+  var zoom = d3.behavior.zoom()
+    .x(xScale)
+    .y(yScale)
+    .on('zoom', function() {
+      svgSelection.select(".x").call(xAxis);
+      svgSelection.select(".y").call(yAxis);
+      starPath.attr('d', line);
+      var fullDomain = maxdate - mindate;
+      var currentDomain = xScale.domain()[1] - xScale.domain()[0];
+      var minScale = currentDomain / fullDomain,
+        maxScale = minScale * 20;
+      zoom.scaleExtent([minScale, maxScale]);
+    });
+  svgSelection.call(zoom)
+    .on("mousedown.zoom", null)
+    .on("touchstart.zoom", null)
+    .on("touchmove.zoom", null)
+    .on("touchend.zoom", null);
 
   // Drag Selection.
   var timeLeft = 0;
@@ -523,25 +609,25 @@ function businessListClick(index) {
 function reviewLineChartHighlight(index) {
   var reviewContent = d3.select('.review-content');
   reviewContent.selectAll('path').classed('path-highlighted', false);
-  reviewContent.select('path:nth-child(' + (index + 1 ) + ')').classed('path-highlighted', true);
+  reviewContent.select('path:nth-child(' + (index + 3 ) + ')').classed('path-highlighted', true);
 }
 
 function reviewLineChartClick(index) {
   var reviewContent = d3.select('.review-content');
   reviewContent.selectAll('path').classed('path-clicked', false);
-  reviewContent.select('path:nth-child(' + (index + 1 ) + ')').classed('path-clicked', true);
+  reviewContent.select('path:nth-child(' + (index + 3 ) + ')').classed('path-clicked', true);
 }
 
 function starLineChartHighlight(index) {
   var starContent = d3.select('.star-content');
   starContent.selectAll('path').classed('path-highlighted', false);
-  starContent.select('path:nth-child(' + (index + 1 ) + ')').classed('path-highlighted', true);
+  starContent.select('path:nth-child(' + (index + 3 ) + ')').classed('path-highlighted', true);
 }
 
 function starLineChartClick(index) {
   var starContent = d3.select('.star-content');
   starContent.selectAll('path').classed('path-clicked', false);
-  starContent.select('path:nth-child(' + (index + 1 ) + ')').classed('path-clicked', true);
+  starContent.select('path:nth-child(' + (index + 3 ) + ')').classed('path-clicked', true);
 }
 
 function clearAllHover() {
