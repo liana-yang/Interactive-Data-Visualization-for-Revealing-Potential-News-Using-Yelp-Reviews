@@ -286,14 +286,15 @@
 //      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
       'All': [moment(new Date(global_line_chart_start_time)),
         moment(new Date(global_line_chart_end_time))],
-      'From 2015-01-01': [moment(new Date(global_line_chart_end_time)).subtract(1, 'year').subtract(-1, 'days'),
+      'From 2015-01-01': [moment(new Date('2015-01-01')),
         moment(new Date(global_line_chart_end_time))],
-      'From 2013-01-01': [moment(new Date(global_line_chart_end_time)).subtract(3, 'year').subtract(-1, 'days'),
+      'From 2013-01-01': [moment(new Date('2013-01-01')),
         moment(new Date(global_line_chart_end_time))],
-      'From 2011-01-01': [moment(new Date(global_line_chart_end_time)).subtract(5, 'year').subtract(-1, 'days'),
+      'From 2011-01-01': [moment(new Date('2011-01-01')),
         moment(new Date(global_line_chart_end_time))]
     }
   }, cb);
+  $('.ranges ul li:first-child').trigger('click');
   $('.calendar').remove();
   $('.ranges li').last().remove();
   $('.range_inputs').remove();
