@@ -180,11 +180,11 @@ svg *::-webkit-selection {
 
 #review-address {
   font-style: italic;
-  font-size: 5px;
+  /*font-size: 5px;*/
 }
 
 #full-address {
-  font-size: 5px;
+  /*font-size: 5px;*/
 }
 
 #business-time input {
@@ -203,7 +203,7 @@ svg *::-webkit-selection {
 
 #filters .select2-container {
   margin-top: 2px;
-  font-size: 5px;
+  /*font-size: 5px;*/
 }
 
 .select2-dropdown.select2-dropdown--below {
