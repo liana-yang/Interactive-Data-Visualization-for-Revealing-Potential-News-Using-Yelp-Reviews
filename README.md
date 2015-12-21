@@ -42,7 +42,7 @@ https://www.yelp.com/dataset_challenge/dataset
     Both json files fit elasticsearch format requirement. (The files are splited into several pieces due to laptop computing amd memory resource limitation.)
 6. Start elasticsearch server, and run "bulk_create.html" in "dataPreparation" folder to load all generated files and bulk create documents in ElasticSearch. "business_files_amount" and "review_files_amount" parameter may need modification according to the actual number of files generated, if yelp provide more data. You may have to load the files part by part, because uploading all of them in one batch requests much computing and memory resource.
 
-7. Keep category.txt files in "dataPreparation" folder, which will be used by front end programme.
+7. Keep "category.txt" files in "dataPreparation" folder, which will be called by front-end program.
 
 
 
