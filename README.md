@@ -13,16 +13,7 @@ This visulization project can help journalist to get two information:
 2.	What are these potential news?
     The tool provides review details and recommend some enlighting words in reviews that maybe helpful for understanding the background of the abnormality found in step one.
 
-# Related Links:
-Link to the Video:
-
-Link to the Demo:
-
-Link to the Final Report:
-
-Link to the data:
-https://www.yelp.com/dataset_challenge/dataset
-# How to configure the server
+# How to Configure Server
 1. Download and install elasticsearch 2.0.0 accroding to the website as below:
 
     https://www.elastic.co/downloads/past-releases/elasticsearch-2-0-0
@@ -47,6 +38,16 @@ https://www.yelp.com/dataset_challenge/dataset
 6. Start elasticsearch server, and run "bulk_create.html" in "dataPreparation" folder to load all generated files and bulk create documents in ElasticSearch. If yelp provide more data, "business_files_amount" and "review_files_amount" parameter may need modification according to the actual number of files generated. You may have to load the files part by part, because uploading all of them in one batch requests much computing and memory resource.
 
 7. Keep "category.txt" files in "dataPreparation" folder, which will be called by front-end program.
+
+# Related Links:
+Link to the Video:
+
+Link to the Demo:
+
+Link to the Final Report:
+
+Link to the data:
+https://www.yelp.com/dataset_challenge/dataset
 
 
 
