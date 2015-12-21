@@ -23,15 +23,15 @@ https://www.yelp.com/dataset_challenge/dataset
 
     https://www.elastic.co/downloads/past-releases/elasticsearch-2-0-0
 
-2. Modify /config/elasticsearch.yml file as the one we shared in the "configrationInfo" folder.
+2. Modify ./config/elasticsearch.yml file as the one we shared in the "configrationInfo" folder.
 
-3. Download yelp review files from the website as below. The program needs:"yelp_academic_dataset_business.json" and "yelp_academic_dataset_review.json".
+3. Download yelp dataset from the website as below. The program needs:"yelp_academic_dataset_business.json" and "yelp_academic_dataset_review.json".
 
     https://www.yelp.com/dataset_challenge/dataset
 
 4. Install Python 3.4.3
 
-5. Put the two yelp json files in "dataPreparation" folder. Run "write_business_and_review_files_for_es_week.py" and "write_review_files_for_es.py". We will get three batch of files:
+5. Put the two json files in "dataPreparation" folder. Run "write_business_and_review_files_for_es_week.py" and "write_review_files_for_es.py". We will get three batch of files:
 
     1) business0.json ~ business6.json
 
@@ -40,7 +40,7 @@ https://www.yelp.com/dataset_challenge/dataset
     3) category.txt
 
     Both json files fit elasticsearch format requirement. (The files are splited into several pieces due to laptop computing amd memory resource limitation.)
-6. Start elasticsearch server, and run "bulk_create.html" in "dataPreparation" folder to load all generated files and bulk create documents in ElasticSearch. "business_files_amount" and "review_files_amount" parameter may need modification according to the actual number of files generated, if yelp provide more data. You may have to load the files part by part, because uploading all of them in one batch requests much computing and memory resource.
+6. Start elasticsearch server, and run "bulk_create.html" in "dataPreparation" folder to load all generated files and bulk create documents in ElasticSearch. If yelp provide more data, "business_files_amount" and "review_files_amount" parameter may need modification according to the actual number of files generated. You may have to load the files part by part, because uploading all of them in one batch requests much computing and memory resource.
 
 7. Keep "category.txt" files in "dataPreparation" folder, which will be called by front-end program.
 
