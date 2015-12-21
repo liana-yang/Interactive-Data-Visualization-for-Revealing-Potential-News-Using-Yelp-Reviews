@@ -130,7 +130,19 @@
 
   </div>
   <div id="line-charts" class="col-sm-6 main">
-    <div><h5>Review Amount</h5></div>
+    <div class="line-chart-title">
+      <div class="center-title">
+        <h5>Review Amount</h5>
+      </div>
+    <!--<div id="show-tooltip" class="has-warning">-->
+      <!--<div class="checkbox">-->
+        <!--<label>-->
+          <!--<input type="checkbox" id="checkboxWarning" value="option1">-->
+          <!--Show Tooltip-->
+        <!--</label>-->
+      <!--</div>-->
+    <!--</div>-->
+    </div>
     <div id="review-amount-line-chart">
     </div>
     <div><h5>Star Amount</h5></div>
@@ -157,11 +169,10 @@
 <div id="tooltip" class="panel panel-info">
   <div id="business-name" class="panel-heading">Business Name</div>
   <div class="panel-body">
-    <span class="tooltip-content">Date: </span><span id="selected-date"></span>
-    </br>
-    <span class="tooltip-content">Review Amount: </span><span id="review-amount"></span>
-    </br>
-    <span class="tooltip-content">Average Star: </span><span id="star-amount"></span>
+    <span class="tooltip-content">Date: </span><span id="selected-date"></span></br>
+    <p class="tooltip-amount"><span class="tooltip-content">Review Amount: </span><span id="review-amount"></span></br></p>
+    <p class="tooltip-amount"><span class="tooltip-content">Average Star: </span><span id="star-amount"></span></p>
+    <p class="tooltip-empty"><span class="tooltip-content">No reviews today. </span></p>
   </div>
 </div>
 
@@ -191,16 +202,17 @@
                   "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY", "DC", "None"];
   var global_category_filter = [];
   var global_next_prev_click_times = 0;
-  var global_line_chart_start_time = "2015-01-01";
-  var global_line_chart_end_time = "2015-12-31";
+  var global_line_chart_start_time = "2004-01-01";
+  var global_line_chart_end_time = "2015-03-01";
   var global_line_chart_max_review_amount = 0;
   var clickedBusinessIndex = 1;
   var clickedBusinessID = '';
   var selectedCategoryFilter = '';
   var selectedLocationFilter = '';
   var reviewListRendered = false;
-  var global_sortKey = '20150101';
-  get_businesses_list_based_on_abnormality_score("yelp", "business1216", 10, 0, "", "", "abnormality_score_" + global_sortKey);
+  var global_sortKey = '';
+  var global_business_size = 12;
+  get_businesses_list_based_on_abnormality_score("yelp", "business1216", global_business_size, 0, "", "", "abnormality_score_" + global_sortKey);
   //options: abnormality_score, abnormality_score_20110101, abnormality_score_20130101, abnormality_score_20150101
   //get_business_list_by_next_button("yelp", "business1208v3", 10, "wi", "bars");
   //get_business_list_by_prev_button("yelp", "business1208v3", 10, "wi", "bars");
@@ -255,8 +267,11 @@
         endDate.format('MMMM D, YYYY'));
     var newStartDate = timeFormate(new Date(startDate));
     global_sortKey = newStartDate.replace(/\-/g, '');
+    if (global_sortKey == '20040101') {
+      global_sortKey = '';
+    }
     console.log(global_sortKey);
-    get_businesses_list_based_on_abnormality_score("yelp", "business1216", 10, 0, selectedLocationFilter, selectedCategoryFilter, "abnormality_score_" + global_sortKey);
+    get_businesses_list_based_on_abnormality_score("yelp", "business1216", global_business_size, 0, selectedLocationFilter, selectedCategoryFilter, "abnormality_score_" + global_sortKey);
   }
 //  cb(moment().subtract(29, 'days'), moment());
   cb(global_line_chart_start_time, global_line_chart_end_time);
@@ -269,15 +284,19 @@
 //      'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 //      'This Month': [moment().startOf('month'), moment().endOf('month')],
 //      'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-      'Last Year': [moment(new Date(global_line_chart_end_time)).subtract(1, 'year').subtract(-1, 'days'),
+      'All': [moment(new Date(global_line_chart_start_time)),
         moment(new Date(global_line_chart_end_time))],
-      'Last Three Years': [moment(new Date(global_line_chart_end_time)).subtract(3, 'year').subtract(-1, 'days'),
+      'From 2015-01-01': [moment(new Date(global_line_chart_end_time)).subtract(1, 'year').subtract(-1, 'days'),
         moment(new Date(global_line_chart_end_time))],
-      'Last Five Years': [moment(new Date(global_line_chart_end_time)).subtract(5, 'year').subtract(-1, 'days'),
+      'From 2013-01-01': [moment(new Date(global_line_chart_end_time)).subtract(3, 'year').subtract(-1, 'days'),
+        moment(new Date(global_line_chart_end_time))],
+      'From 2011-01-01': [moment(new Date(global_line_chart_end_time)).subtract(5, 'year').subtract(-1, 'days'),
         moment(new Date(global_line_chart_end_time))]
     }
   }, cb);
-
+  $('.calendar').remove();
+  $('.ranges li').last().remove();
+  $('.range_inputs').remove();
 
 </script>
 </body>

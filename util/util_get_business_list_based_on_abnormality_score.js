@@ -2,6 +2,10 @@
  * Created by Jiaqiang on 12/6/2015.
  */
 function get_businesses_list_based_on_abnormality_score(index, type, size, offset_number, location, category, sort_key) {
+    if (sort_key == 'abnormality_score_') {
+        sort_key = sort_key.slice(0, -1);
+    }
+    console.log(sort_key);
     if (location == "" && category == "") {
         client.search({
             "index": index,

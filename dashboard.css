@@ -179,7 +179,7 @@ svg *::-webkit-selection {
 }
 
 #review-address {
-  font-style: italic;
+  /*font-style: italic;*/
   /*font-size: 5px;*/
 }
 
@@ -207,7 +207,7 @@ svg *::-webkit-selection {
 }
 
 .select2-dropdown.select2-dropdown--below {
-  font-size: 5px !important;
+  /*font-size: 5px !important;*/
 }
 
 #reportrange {
@@ -236,6 +236,24 @@ svg *::-webkit-selection {
 #tooltip .panel-body {
   padding-top: 5px;
   padding-bottom: 5px;
+}
+
+.line-chart-title {
+  display: inline;
+}
+
+.center-title {
+  display: inline;
+}
+
+#show-tooltip {
+  display: inline;
+  float: left;
+  font-size: small;
+}
+
+#review-amount-line-chart{
+  clear: left;
 }
 
 /*.select2-container--default .select2-selection--single{*/
