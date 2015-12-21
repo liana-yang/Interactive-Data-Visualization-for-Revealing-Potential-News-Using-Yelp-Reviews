@@ -1,8 +1,9 @@
-# Interactive-Data-Visualization-for-Revealing-Potential-News-Using-Yelp-Reviews
+# Visualize Potential News Using Yelp Reviews
 This is a visual analytic platform to mine and visualize the data of yelp reviews to help investigative journalists explore large sets of crowd-sourced reviews by D3.js.
 # Authors:
-Shauro
-mjq04
+Shauro, ly921@nyu.edu
+
+mjq04,  jm6413@nyu.edu
 # Application Images:
 # Application Description:
 Journalists want to explore crowd-sourced reviews from Yelp to identify hot spots. However, large human-generated text data is complex to analyze and it is hard for journalists to look into millions of Yelp reviews. Therefore, developing a visual analytic platform to mine and visualize these data could help investigative journalists explore large sets of crowd-sourced reviews.
@@ -42,12 +43,11 @@ This visulization project can help journalist to get two information:
 # Related Links:
 Link to the Video:
 
-Link to the Demo:
+Link to the Demo:http://mjq04.github.io/Potential-News-in-Yelp/
 
-Link to the Final Report:
+Link to the Final Report:https://docs.google.com/document/d/1dnX4LjAm40v2nLBm2bWV9WUH-JQNcY0ZRZHnIZ4CNic/edit?usp=sharing
 
-Link to the data:
-https://www.yelp.com/dataset_challenge/dataset
+Link to the data:https://www.yelp.com/dataset_challenge/dataset
 
 
 
