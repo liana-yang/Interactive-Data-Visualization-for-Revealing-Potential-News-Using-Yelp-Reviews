@@ -114,7 +114,6 @@ function renderFunctions(business_list) {
         list_for_line[i] = get_date_and_review_amount(businessList[i]);
         i++;
     }
-    console.log(global_line_chart_max_review_amount);
     renderBusinessList(businessList);
     renderLineCharts(list_for_line);
     $(window).resize(function () {
