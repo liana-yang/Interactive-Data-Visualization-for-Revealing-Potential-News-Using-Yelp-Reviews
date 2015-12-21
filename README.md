@@ -21,13 +21,13 @@ https://www.yelp.com/dataset_challenge/dataset
 # How to configure the server
 1. Download and install elasticsearch 2.0.0 accroding to the website as below:
 
-https://www.elastic.co/downloads/past-releases/elasticsearch-2-0-0
+    https://www.elastic.co/downloads/past-releases/elasticsearch-2-0-0
 
 2. Modify /config/elasticsearch.yml file as the one we shared in the "configrationInfo" folder.
 
 3. Download yelp review files from the website as below. The program needs:"yelp_academic_dataset_business.json" and "yelp_academic_dataset_review.json".
 
-https://www.yelp.com/dataset_challenge/dataset
+    https://www.yelp.com/dataset_challenge/dataset
 
 4. Install Python 3.4.3
 
