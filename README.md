@@ -42,7 +42,7 @@ This visulization project can help journalist to get two information:
 7. Keep "category.txt" files in "dataPreparation" folder, which will be called by front-end program.
 
 # Related Links:
-Link to the Video:
+Link to the Video:https://vimeo.com/149686492
 
 Link to the Demo:http://mjq04.github.io/Potential-News-in-Yelp/
 
