@@ -192,6 +192,30 @@ svg *::-webkit-selection {
   border-radius: 4px;
 }
 
+#tooltip {
+  height: auto;
+  display: none;
+  position: absolute;
+}
+
+#business-name {
+  height: 30px;
+  padding-top: 7px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.tooltip-content {
+  font-weight: bold;
+  font-size: 8px;
+  display: inline;
+}
+
+#tooltip .panel-body {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 /*.select2-container--default .select2-selection--single{*/
   /*padding:6px;*/
   /*height: 37px;*/

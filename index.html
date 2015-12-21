@@ -134,15 +134,6 @@
     </div>
     <div id="star-amount-line-chart">
     </div>
-    <div class="panel panel-info tooltip">
-      <div id="business-name" class="panel-heading">Business Name</div>
-      <div class="panel-body">
-        <h5>Review Amount</h5>
-        <span id="review-amount"></span>
-        <h5>Average Star</h5>
-        <span id="star-amount"></span>
-      </div>
-    </div>
   </div>
   <div id="review-list" class="col-sm-4 main">
     <h5 class="sub-header">Reviews of Selected Business</h5>
@@ -159,6 +150,16 @@
         </tbody>
       </table>
     </div>
+  </div>
+</div>
+<div id="tooltip" class="panel panel-info">
+  <div id="business-name" class="panel-heading">Business Name</div>
+  <div class="panel-body">
+    <span class="tooltip-content">Date: </span><span id="selected-date"></span>
+    </br>
+    <span class="tooltip-content">Review Amount: </span><span id="review-amount"></span>
+    </br>
+    <span class="tooltip-content">Average Star: </span><span id="star-amount"></span>
   </div>
 </div>
 

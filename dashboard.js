@@ -145,7 +145,7 @@ function drawReviewAmountLineChart(lineChartData) {
       starLineChartHighlight(i);
       var pointer = d3.mouse(this);
       var selectedDate = timeFormate(xScale.invert(pointer[0]));
-      //renderTooltip(selection.text(), selectedDate, data, [d3.event.x, d3.event.y]);
+      renderTooltip(selection.text(), selectedDate, data, [d3.event.x, d3.event.y], i);
     })
     .on('click', function (data, i) {
       var selection = $('#business-list tbody tr:nth-child(' + (i + 1) + ') td')
@@ -153,6 +153,9 @@ function drawReviewAmountLineChart(lineChartData) {
     })
     .on('mouseout', function() {
       clearAllHover();
+      d3.select('#tooltip').style({
+        'display': 'none'
+      });
     });
   reviewPath.classed('profile', true)
     .attr('d', line)
@@ -323,15 +326,22 @@ function drawStarAmountLineChart(lineChartData) {
     .interpolate('linear');
   starPath.enter().append('path')
     .on('mousemove', function (data, i) {
+      var selection = $('#business-list tbody tr:nth-child(' + (i + 1) + ') td')
       businessListHighlight(i);
       reviewLineChartHighlight(i);
       starLineChartHighlight(i);
+      var pointer = d3.mouse(this);
+      var selectedDate = timeFormate(xScale.invert(pointer[0]));
+      renderTooltip(selection.text(), selectedDate, data, [d3.event.x, d3.event.y], i);
     })
     .on('click', function (data, i) {
       $('#business-list tbody tr:nth-child(' + (i + 1) + ') td').trigger('click');
     })
     .on('mouseout', function() {
       clearAllHover();
+      d3.select('#tooltip').style({
+        'display': 'none'
+      });
     });
   starPath.classed('profile', true)
     .attr('d', line)
@@ -457,11 +467,10 @@ function drawStarAmountLineChart(lineChartData) {
     });
 }
 
-function renderTooltip(businessName, selectedDate, data, pointer) {
+function renderTooltip(businessName, selectedDate, data, pointer, index) {
   var i = 0;
   var reviewAmount = 0;
   var starAmount = 0;
-  console.log(data);
   while (i < data.length) {
     if (data[i].date == selectedDate) {
       reviewAmount = data[i].review_amount;
@@ -470,15 +479,25 @@ function renderTooltip(businessName, selectedDate, data, pointer) {
     }
     i++;
   }
-  console.log(reviewAmount, starAmount);
-  d3.select('.tooltip').style({
-    'display': 'block',
+  d3.select('#tooltip').style({
+    'display': 'inline',
     'top': pointer[1] + 'px',
     'left': pointer[0] + 'px'
   });
   d3.select('#business-name').text(businessName);
+  d3.select('#selected-date').text(selectedDate);
   d3.select('#review-amount').text(reviewAmount);
   d3.select('#star-amount').text(starAmount);
+  if (window.clickedBusinessIndex == index + 1) {
+    d3.select('#tooltip')
+      .classed('panel-info', true)
+      .classed('panel-warning', false);
+  }
+  else {
+    d3.select('#tooltip')
+      .classed('panel-info', false)
+      .classed('panel-warning', true);
+  }
   //.addClass('panel panel-info tooltip');
   //panelSelection.attr('transform', 'translate(' + pointer[0] + ', ' + pointer[1] + ')');
   //var tooltipHeading = panelSelection.append('div')
