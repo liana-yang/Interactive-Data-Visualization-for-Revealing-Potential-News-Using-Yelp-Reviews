@@ -5,6 +5,7 @@ Shauro, ly921@nyu.edu
 
 mjq04,  jm6413@nyu.edu
 # Application Images:
+![](Potential_News_in_Yelp_Snapshot2.png)
 # Application Description:
 Journalists want to explore crowd-sourced reviews from Yelp to identify hot spots. However, large human-generated text data is complex to analyze and it is hard for journalists to look into millions of Yelp reviews. Therefore, developing a visual analytic platform to mine and visualize these data could help investigative journalists explore large sets of crowd-sourced reviews.
 This visulization project can help journalist to get two information:
@@ -41,7 +42,7 @@ This visulization project can help journalist to get two information:
 7. Keep "category.txt" files in "dataPreparation" folder, which will be called by front-end program.
 
 # Related Links:
-Link to the Video:
+Link to the Video:https://vimeo.com/149686492
 
 Link to the Demo:http://mjq04.github.io/Potential-News-in-Yelp/
 
