@@ -28,6 +28,7 @@ function renderBusinessList(businessList) {
       starLineChartClick(i);
       window.clickedBusinessIndex = i + 1;
       window.clickedBusinessID = business._source.business_id;
+      d3.select('#selected-business-name').text()
       d3.select('#full-address').text(business._source.full_address);
       get_review_details_within_time_range("yelp", "review1208v3", business._source.business_id, 100, "asc", "2005-01-01", "2014-12-31");
     })
@@ -153,7 +154,7 @@ function drawReviewAmountLineChart(lineChartData) {
   reviewPath.enter().append('path')
     .attr("clip-path", "url(#clip)")
     .on('mousemove', function (data, i) {
-      var selection = $('#business-list tbody tr:nth-child(' + (i + 1) + ') td')
+      var selection = $('#business-list tbody tr:nth-of-type(' + (i + 1) + ') td')
       businessListHighlight(i);
       reviewLineChartHighlight(i);
       starLineChartHighlight(i);
@@ -162,7 +163,7 @@ function drawReviewAmountLineChart(lineChartData) {
       renderTooltip(selection.text(), selectedDate, data, [d3.event.x, d3.event.y], i);
     })
     .on('click', function (data, i) {
-      var selection = $('#business-list tbody tr:nth-child(' + (i + 1) + ') td')
+      var selection = $('#business-list tbody tr:nth-of-type(' + (i + 1) + ') td')
       selection.trigger('click');
     })
     .on('mouseout', function() {
@@ -413,7 +414,7 @@ function drawStarAmountLineChart(lineChartData) {
   starPath.enter().append('path')
     .attr("clip-path", "url(#clip)")
     .on('mousemove', function (data, i) {
-      var selection = $('#business-list tbody tr:nth-child(' + (i + 1) + ') td')
+      var selection = $('#business-list tbody tr:nth-of-type(' + (i + 1) + ') td')
       businessListHighlight(i);
       reviewLineChartHighlight(i);
       starLineChartHighlight(i);
@@ -422,7 +423,7 @@ function drawStarAmountLineChart(lineChartData) {
       renderTooltip(selection.text(), selectedDate, data, [d3.event.x, d3.event.y], i);
     })
     .on('click', function (data, i) {
-      $('#business-list tbody tr:nth-child(' + (i + 1) + ') td').trigger('click');
+      $('#business-list tbody tr:nth-of-type(' + (i + 1) + ') td').trigger('click');
     })
     .on('mouseout', function() {
       clearAllHover();
@@ -642,37 +643,37 @@ function renderTooltip(businessName, selectedDate, data, pointer, index) {
 function businessListHighlight(index) {
   var tbodySelection = d3.select('#business-list').select('tbody');
   tbodySelection.selectAll('td').classed('text-highlighted', false);
-  tbodySelection.select('tr:nth-child(' + (index + 1 ) + ') td').classed('text-highlighted', true);
+  tbodySelection.select('tr:nth-of-type(' + (index + 1) + ') td').classed('text-highlighted', true);
 }
 
 function businessListClick(index) {
   var tbodySelection = d3.select('#business-list').select('tbody');
   tbodySelection.selectAll('td').classed('text-clicked', false);
-  tbodySelection.select('tr:nth-child(' + (index + 1 ) + ') td').classed('text-clicked', true);
+  tbodySelection.select('tr:nth-of-type(' + (index + 1) + ') td').classed('text-clicked', true);
 }
 
 function reviewLineChartHighlight(index) {
   var reviewContent = d3.select('.review-content');
   reviewContent.selectAll('path').classed('path-highlighted', false);
-  reviewContent.select('path:nth-child(' + (index + 3 ) + ')').classed('path-highlighted', true);
+  reviewContent.select('path:nth-of-type(' + (index + 1) + ')').classed('path-highlighted', true);
 }
 
 function reviewLineChartClick(index) {
   var reviewContent = d3.select('.review-content');
   reviewContent.selectAll('path').classed('path-clicked', false);
-  reviewContent.select('path:nth-child(' + (index + 3 ) + ')').classed('path-clicked', true);
+  reviewContent.select('path:nth-of-type(' + (index + 1) + ')').classed('path-clicked', true);
 }
 
 function starLineChartHighlight(index) {
   var starContent = d3.select('.star-content');
   starContent.selectAll('path').classed('path-highlighted', false);
-  starContent.select('path:nth-child(' + (index + 3 ) + ')').classed('path-highlighted', true);
+  starContent.select('path:nth-of-type(' + (index + 1) + ')').classed('path-highlighted', true);
 }
 
 function starLineChartClick(index) {
   var starContent = d3.select('.star-content');
   starContent.selectAll('path').classed('path-clicked', false);
-  starContent.select('path:nth-child(' + (index + 3 ) + ')').classed('path-clicked', true);
+  starContent.select('path:nth-of-type(' + (index + 1) + ')').classed('path-clicked', true);
 }
 
 function clearAllHover() {
@@ -686,7 +687,7 @@ function clearAllHover() {
 
 function highlightWordInReview(wordList) {
   wordList.forEach(function(word, i) {
-    var tdSelection = $('#review-list tbody tr td:nth-child(2)');
+    var tdSelection = $('#review-list tbody tr td:nth-of-type(2)');
     //highlight_words(word.key, tdSelection);
     highlight_words(word.key, tdSelection);
   });
