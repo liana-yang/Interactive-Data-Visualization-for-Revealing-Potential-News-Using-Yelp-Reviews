@@ -28,7 +28,8 @@ function renderBusinessList(businessList) {
       starLineChartClick(i);
       window.clickedBusinessIndex = i + 1;
       window.clickedBusinessID = business._source.business_id;
-      d3.select('#selected-business-name').text()
+      console.log(business);
+      d3.select('#selected-business-name').text(business._source.name);
       d3.select('#full-address').text(business._source.full_address);
       get_review_details_within_time_range("yelp", "review1208v3", business._source.business_id, 100, "asc", "2005-01-01", "2014-12-31");
     })
@@ -338,7 +339,27 @@ function drawReviewAmountLineChart(lineChartData) {
       if (startDate != endDate) {
         window.reviewListRendered = true;
         get_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 100, "asc", startDate, endDate);
-        //get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 10, startDate, endDate);
+        ////get_significant_terms_in_review_details_within_time_range("yelp", "review1208v3", window.clickedBusinessID, 10, startDate, endDate);
+        //var oneDay = 24 * 60 * 60 * 1000;
+        //var diffDaysTotal = (maxdate.getTime() - mindate.getTime()) / (oneDay);
+        //var diffDaysSelected = (rightDate.getTime() - leftDate.getTime()) / (oneDay);
+        ////var zoomScale = (diffDaysTotal / diffDaysSelected).toFixed(2);
+        //var zoomScale = (lineChartWidth - 60) / (timeRight - timeLeft);
+        //
+        ////var zoomTranslate = (mindate.getTime() - leftDate.getTime()) / (oneDay);
+        //var zoomTranslate = ((lineChartWidth - (timeRight - timeLeft)) / 2) - timeLeft;
+        //
+        //console.log(zoomScale);
+        //console.log(zoomTranslate);
+        //console.log(timeLeft);
+        //reviewPath.call(zoom);
+        //zoom.center([((timeRight - timeLeft) / 2) + timeLeft, 0]);
+        //zoom.scale(zoomScale);
+        //console.log(zoom.center());
+        ////zoom.translate([zoomTranslate, 0]);
+        ////zoom.translate([-(timeLeft * zoomScale), 0]);
+        ////zoom.size([lineChartWidth - 60, lineChartHeight - 40]);
+        //zoom.event(reviewPath)
       }
     })
     .on('mouseout', function () {
@@ -631,6 +652,12 @@ function renderTooltip(businessName, selectedDate, data, pointer, index) {
       .classed('panel-info', false)
       .classed('panel-warning', true);
   }
+  if (reviewAmount == 0 || starAmount == 0) {
+    d3.select('#tooltip').style({
+      'display': 'none'
+    });
+  }
+
   //.addClass('panel panel-info tooltip');
   //panelSelection.attr('transform', 'translate(' + pointer[0] + ', ' + pointer[1] + ')');
   //var tooltipHeading = panelSelection.append('div')
@@ -686,6 +713,7 @@ function clearAllHover() {
 }
 
 function highlightWordInReview(wordList) {
+  $('#key-words').empty();
   wordList.forEach(function(word, i) {
     var tdSelection = $('#review-list tbody tr td:nth-of-type(2)');
     //highlight_words(word.key, tdSelection);
@@ -717,6 +745,12 @@ function highlight_words(keywords, element) {
     //var textColor = color[hashString(keywords) % 60];
     var textColor = color[hashString(keywords) % 10];
     $('.keyword-' + keywords).css('color', textColor);
+
+    //$('.key-words-init').clone()
+    //  .attr('id', keywords)
+    //  .text(keywords)
+    //  .attr('display', 'inline')
+    //  .appendTo('#key-words');
   }
 }
 

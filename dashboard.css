@@ -99,6 +99,7 @@ body {
 #review-list .table-responsive {
   height: 75vh;
   overflow-y: auto;
+  margin-top: 10px;
 }
 
 #review-list .table-responsive table {
@@ -252,8 +253,12 @@ svg *::-webkit-selection {
   font-size: small;
 }
 
-#review-amount-line-chart{
+#review-amount-line-chart {
   clear: left;
+}
+
+#key-words-init {
+  display: none;
 }
 
 /*.select2-container--default .select2-selection--single{*/
