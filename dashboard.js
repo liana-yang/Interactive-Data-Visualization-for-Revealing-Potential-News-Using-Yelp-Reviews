@@ -211,7 +211,7 @@ function drawReviewAmountLineChart(lineChartData) {
       var minScale = currentDomain / fullDomain,
         maxScale = minScale * 20;
       //zoom.scaleExtent([0, maxScale]);
-      zoom.scaleExtent([1, 12]);
+      zoom.scaleExtent([1, 20]);
     });
   //    //xScale.domain([xMin, xMax]);
   //    //yScale.domain([yMax, yMin]);
@@ -497,7 +497,7 @@ function drawStarAmountLineChart(lineChartData) {
       var currentDomain = xScale.domain()[1] - xScale.domain()[0];
       var minScale = currentDomain / fullDomain,
         maxScale = minScale * 20;
-      zoom.scaleExtent([1, 12]);
+      zoom.scaleExtent([1, 20]);
     });
   svgSelection.call(zoom)
     .on("mousedown.zoom", null)
