@@ -8,12 +8,12 @@ mjq04,  jm6413@nyu.edu
 ![](Potential_News_in_Yelp_Snapshot2.png)
 # Application Description:
 Journalists want to explore crowd-sourced reviews from Yelp to identify hot spots. However, large human-generated text data is complex to analyze and it is hard for journalists to look into millions of Yelp reviews. Therefore, developing a visual analytic platform to mine and visualize these data could help investigative journalists explore large sets of crowd-sourced reviews.
-This visulization project can help journalist to get two information:
+This visualization project can help journalist to get two information:
 
 1.	Where are potential news in Yelp logs? 
-    The tool recommends business list based on abnormality posibility, and provide related business review_amount and average stars trend. Both of them can help users to look up potential news.
+    The tool recommends business list based on abnormality possibility, and provide related business review_amount and average stars trend. Both of them can help users to look up potential news.
 2.	What are these potential news?
-    The tool provides review details and recommend some enlighting words in reviews that maybe helpful for understanding the background of the abnormality found in step one.
+    The tool provides review details and recommend some highlighted words in reviews that maybe helpful for understanding the background of the abnormality found in step one.
 
 # How to Configure Server
 1. Download and install elasticsearch 2.0.0 accroding to the website as below:
